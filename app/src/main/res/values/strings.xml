@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">FoodPlanner_project</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="log_G">Login With G</string>
+    <string name="guest">Guest</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="cpassword">confirm Password</string>
+    <string name="toRegister">"Don't have an account? "</string>
+    <string name="tologin">Already Registered?</string>
+    <string name="home">Home</string>
+    <string name="search">Search</string>
+    <string name="favorite">Favorite meals</string>
+    <string name="myplane">My Plane</string>
+    <string name="logout">Log out</string>
+    <string name="Name">Name</string>
+    <string name="country">Country</string>
+    <string name="instructions">Instructions</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="add_fav">Add to fav</string>
+    <string name="add_plane">Add to plan</string>
+    <string name="remove">Remove from fav</string>
 </resources>

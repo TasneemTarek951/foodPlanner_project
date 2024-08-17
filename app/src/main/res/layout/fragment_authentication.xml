@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/food"
+    tools:context=".AuthenticationFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <Button
+        android:id="@+id/Register_btn"
+        android:layout_width="171dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="184dp"
+        android:backgroundTint="#BD4239"
+        android:text="@string/register"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Guest_btn"
+        android:layout_width="171dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="352dp"
+        android:backgroundTint="#BD4239"
+        android:text="@string/guest"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Login_btn"
+        android:layout_width="171dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="264dp"
+        android:backgroundTint="#BD4239"
+        android:text="@string/login"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Log_G_btn"
+        android:layout_width="171dp"
+        android:layout_height="61dp"
+        android:layout_marginStart="144dp"
+        android:layout_marginTop="448dp"
+        android:backgroundTint="#BD4239"
+        android:text="@string/log_G"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

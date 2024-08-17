@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frameLayout5"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/meal_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="620dp"
+        android:src="@drawable/ic_launcher_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/meal_country"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="248dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meal_image" />
+
+    <TextView
+        android:id="@+id/meal_instructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="27dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meal_country" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="28dp"
+        android:text="@string/instructions"
+        app:layout_constraintEnd_toStartOf="@+id/meal_instructions"
+        app:layout_constraintTop_toBottomOf="@+id/textView17" />
+
+    <TextView
+        android:id="@+id/meal_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="20dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meal_image" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:text="@string/Name"
+        app:layout_constraintEnd_toStartOf="@+id/meal_name"
+        app:layout_constraintTop_toBottomOf="@+id/meal_image" />
+
+    <VideoView
+        android:id="@+id/video_view"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="96dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="31dp"
+        android:text="@string/ingredients"
+        app:layout_constraintEnd_toStartOf="@+id/ing_1"
+        app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="32dp"
+        android:text="@string/country"
+        app:layout_constraintEnd_toStartOf="@+id/meal_country"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+
+    <Button
+        android:id="@+id/remove_fav"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="128dp"
+        android:text="@string/remove"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/video_view" />
+
+    <TextView
+        android:id="@+id/ing_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="107dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/video_view"
+        app:layout_constraintEnd_toStartOf="@+id/ing_6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ing_1" />
+
+    <TextView
+        android:id="@+id/ing_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="11dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/ing_2"
+        app:layout_constraintTop_toBottomOf="@+id/meal_instructions" />
+
+    <TextView
+        android:id="@+id/ing_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="157dp"
+        android:layout_marginEnd="44dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/meal_image" />
+
+    <TextView
+        android:id="@+id/ing_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="157dp"
+        android:layout_marginEnd="7dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/ing_4"
+        app:layout_constraintTop_toBottomOf="@+id/meal_image" />
+
+    <TextView
+        android:id="@+id/ing_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="157dp"
+        android:layout_marginEnd="10dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/ing_3"
+        app:layout_constraintTop_toBottomOf="@+id/meal_image" />
+
+    <TextView
+        android:id="@+id/ing_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="44dp"
+        android:layout_marginBottom="12dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/video_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ing_4" />
+
+    <TextView
+        android:id="@+id/ing_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="7dp"
+        android:layout_marginBottom="12dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/video_view"
+        app:layout_constraintEnd_toStartOf="@+id/ing_8"
+        app:layout_constraintTop_toBottomOf="@+id/ing_3" />
+
+    <TextView
+        android:id="@+id/ing_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="9dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toStartOf="@+id/ing_7"
+        app:layout_constraintTop_toBottomOf="@+id/ing_2" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/homeFragment"
+        android:icon="@drawable/home_24dp_5f6368_fill0_wght400_grad0_opsz24"
+        android:title="@string/home" />
+    <item
+        android:id="@+id/searchFragment"
+        android:icon="@drawable/search_24dp_5f6368_fill0_wght400_grad0_opsz24"
+        android:title="@string/search" />
+    <item
+        android:id="@+id/favoriteFragment"
+        android:icon="@drawable/favorite_24dp_5f6368_fill0_wght400_grad0_opsz24"
+        android:title="@string/favorite" />
+    <item
+        android:id="@+id/myPlaneFragment"
+        android:icon="@drawable/lunch_dining_24dp_5f6368_fill0_wght400_grad0_opsz24"
+        android:title="@string/myplane" />
+    <item
+        android:id="@+id/log_out_item"
+        android:icon="@drawable/logout_24dp_5f6368_fill0_wght400_grad0_opsz24"
+        android:title="@string/logout" />
+</menu>
