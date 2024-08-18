@@ -10,7 +10,7 @@ public class Meal {
     @PrimaryKey
     @NonNull
     String strMeal;
-    String strArea;
+    public String strArea;
     String strInstructions;
     String strMealThumb;
     String strYoutube;
