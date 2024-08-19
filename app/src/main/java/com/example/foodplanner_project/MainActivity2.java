@@ -18,6 +18,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.widget.Toast;
+
 import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity2 extends AppCompatActivity {
@@ -54,6 +59,8 @@ public class MainActivity2 extends AppCompatActivity {
         MenuItem item2 = menu.findItem(R.id.myPlaneFragment);
         MenuItem item3 = menu.findItem(R.id.log_out_item);
 
+        updateMenuItemsBasedOnConnection();
+
         item3.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
@@ -71,6 +78,12 @@ public class MainActivity2 extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        updateMenuItemsBasedOnConnection();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == android.R.id.home){
             if(drawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -80,5 +93,31 @@ public class MainActivity2 extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public static class NetworkUtils {
+        public static boolean isConnected(Context context) {
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+            return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        }
+    }
+
+    private void updateMenuItemsBasedOnConnection() {
+        Menu menu = navigationView.getMenu();
+        boolean isConnected = NetworkUtils.isConnected(this);
+
+        // Assuming the IDs of the two specific icons are nav_icon1 and nav_icon2
+        MenuItem item1 = menu.findItem(R.id.homeFragment);
+        MenuItem item2 = menu.findItem(R.id.searchFragment);
+
+        if (isConnected) {
+            item1.setEnabled(true);
+            item2.setEnabled(true);
+        } else {
+            item1.setEnabled(false);
+            item2.setEnabled(false);
+            Toast.makeText(this, "No internet connection. Some features are disabled.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

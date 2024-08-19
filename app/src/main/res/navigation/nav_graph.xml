@@ -14,7 +14,11 @@
         android:id="@+id/searchFragment"
         android:name="com.example.foodplanner_project.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_searchResultFragment"
+            app:destination="@id/searchResultFragment" />
+    </fragment>
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.example.foodplanner_project.FavoriteFragment"
@@ -25,4 +29,25 @@
         android:name="com.example.foodplanner_project.MyPlaneFragment"
         android:label="fragment_my_plane"
         tools:layout="@layout/fragment_my_plane" />
+    <fragment
+        android:id="@+id/searchResultFragment"
+        android:name="com.example.foodplanner_project.SearchResultFragment"
+        android:label="fragment_search_result"
+        tools:layout="@layout/fragment_search_result" >
+        <argument
+            android:name="endpoint"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_searchResultFragment_to_mealDetailsFragment"
+            app:destination="@id/mealDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mealDetailsFragment"
+        android:name="com.example.foodplanner_project.MealDetailsFragment"
+        android:label="fragment_meal_details"
+        tools:layout="@layout/fragment_meal_details" >
+        <argument
+            android:name="mealname"
+            app:argType="string" />
+    </fragment>
 </navigation>

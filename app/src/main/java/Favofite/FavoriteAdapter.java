@@ -1,17 +1,12 @@
-package db;
+package Favofite;
 
 import android.content.Context;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -24,38 +19,43 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import Home.Meal;
-import Home.onMealClickListener;
 
-public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder>{
     private Context context;
-    private List<Meal> meals;
-    private onMealClickListener listener;
+    private List<Meal> mealList = new ArrayList<Meal>();
+    private onFavoriteClickListener onFavoriteClickListener;
     private Lifecycle lifecycle;
 
-    public HomeAdapter(Context con,List<Meal> mealList,onMealClickListener li,Lifecycle life){
+    public FavoriteAdapter(Context con,List<Meal> meals,onFavoriteClickListener listener,Lifecycle life){
         context = con;
-        meals = mealList;
-        listener = li;
+        mealList = meals;
+        onFavoriteClickListener = listener;
         lifecycle = life;
     }
-    public void SetList(List<Meal> mealList){
-        meals = mealList;
+
+    public void setList(List<Meal> meals){
+        mealList = meals;
+        notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.meal_layout,parent,false);
+        View row = inflater.inflate(R.layout.fav_meal_layout,parent,false);
         ViewHolder viewHolder = new ViewHolder(row);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Meal meal = meals.get(position);
+        Meal meal = mealList.get(position);
         holder.strMeal.setText(meal.getStrMeal());
         holder.strArea.setText(meal.getstrArea());
         holder.strInstructions.setText(meal.getStrInstructions());
@@ -79,19 +79,20 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         });
         lifecycle.addObserver(holder.strYoutube);
 
-        holder.addtofav.setOnClickListener(new View.OnClickListener() {
+
+
+        holder.removefromfav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.OnmealclickListener(meal);
+                onFavoriteClickListener.OnfavClickListener(meal);
             }
         });
-
 
     }
 
     @Override
     public int getItemCount() {
-        return meals.size();
+        return mealList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -108,8 +109,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         TextView strIngredient6;
         TextView strIngredient7;
         TextView strIngredient8;
-        Button addtofav;
-        Button addtoplan;
+        Button removefromfav;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             strMeal = itemView.findViewById(R.id.meal_name);
@@ -125,10 +125,10 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             strIngredient8 = itemView.findViewById(R.id.ing_8);
             strMealThumb = itemView.findViewById(R.id.meal_image);
             strYoutube = itemView.findViewById(R.id.video_view);
-            addtofav = itemView.findViewById(R.id.add_fav);
-            addtoplan = itemView.findViewById(R.id.add_plan);
+            removefromfav = itemView.findViewById(R.id.remove_fav);
         }
     }
+
     public String extractYouTubeVideoId(String url) {
         String videoId = null;
         String regex = "v=([^&]+)";

@@ -2,57 +2,38 @@ package com.example.foodplanner_project;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link FavoriteFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class FavoriteFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import Favofite.FavoriteAdapter;
+import Favofite.FavoritePresenterImp;
+import Favofite.FavoriteView;
+import Favofite.onFavoriteClickListener;
+import Home.Meal;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    public FavoriteFragment() {
-        // Required empty public constructor
-    }
+public class FavoriteFragment extends Fragment implements onFavoriteClickListener, FavoriteView {
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment FavoriteFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static FavoriteFragment newInstance(String param1, String param2) {
-        FavoriteFragment fragment = new FavoriteFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    RecyclerView recycl;
+    LinearLayoutManager layout;
+    FavoriteAdapter favoriteAdapter;
+    FavoritePresenterImp presenterImp;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -60,5 +41,35 @@ public class FavoriteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_favorite, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        recycl = view.findViewById(R.id.recyclerView);
+        layout = new LinearLayoutManager(getActivity());
+        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        presenterImp = new FavoritePresenterImp(getActivity(),this,this);
+
+        favoriteAdapter = new FavoriteAdapter(getActivity(),new ArrayList<Meal>(),this,getViewLifecycleOwner().getLifecycle());
+        recycl.setLayoutManager(layout);
+        recycl.setAdapter(favoriteAdapter);
+
+
+
+    }
+
+    @Override
+    public void ShowData(List<Meal> meals) {
+        favoriteAdapter.setList(meals);
+        favoriteAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void OnfavClickListener(Meal meal) {
+        Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
+        presenterImp.removefromFavorite(meal);
+
     }
 }

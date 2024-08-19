@@ -125,19 +125,13 @@
                 android:gravity="center">
 
                 <Button
-                    android:id="@+id/add_fav"
+                    android:id="@+id/remove_fav"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
                     android:backgroundTint="#BD4239"
-                    android:text="@string/add_fav" />
+                    android:text="@string/remove" />
 
-                <Button
-                    android:id="@+id/add_plan"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#BD4239"
-                    android:text="add_plan" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

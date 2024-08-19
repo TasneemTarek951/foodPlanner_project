@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id ("androidx.navigation.safeargs")
 }
 
 android {
@@ -68,6 +69,9 @@ dependencies {
 
     //google
     implementation ("com.google.android.gms:play-services-auth:21.2.0")
+
+
+    implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 
 
 
