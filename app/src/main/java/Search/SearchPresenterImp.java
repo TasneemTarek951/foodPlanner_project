@@ -23,7 +23,6 @@ public class SearchPresenterImp implements ImageNetworkCallback{
         network = new ImageNetwork(Mealname);
         network.Makenetworkcallback(this);
 
-
     }
     @Override
     public void onSuccessResult(List<Image> images) {

@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,8 +89,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(YouTubePlayer youTubePlayer) {
-                String videoId = extractYouTubeVideoId(meal.getStrYoutube());;
-                youTubePlayer.cueVideo(videoId, 0);
+                String videoId = extractYouTubeVideoId(meal.getStrYoutube());
+                if (videoId != null) {
+                    youTubePlayer.cueVideo(videoId, 0);
+                } else {
+                    Log.e("HomeAdapter", "Failed to cue video: video ID is null");
+                    Toast.makeText(context, "Failed to load video", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         lifecycle.addObserver(holder.strYoutube);
@@ -116,7 +122,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             }
         });
 
-       // listener.clickListener(mealPlan);
+
         holder.addtoplan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,6 +181,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             }
         }
     }
+
     public String extractYouTubeVideoId(String url) {
         String videoId = null;
         String regex = "v=([^&]+)";
@@ -183,8 +190,18 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         if (matcher.find()) {
             videoId = matcher.group(1);
         }
+
+        // Check if videoId is null and return a default videoId or handle the error
+        if (videoId == null || videoId.isEmpty()) {
+            Log.e("HomeAdapter", "Invalid YouTube URL or video ID is null");
+            return null; // or return a default video ID, e.g., "dQw4w9WgXcQ"
+        }
+
         return videoId;
     }
+
+
+
 
     private void showMealSelectionDialog() {
         // Create a list of meal options

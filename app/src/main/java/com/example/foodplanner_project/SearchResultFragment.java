@@ -25,6 +25,7 @@ import Search.SearchView;
 
 public class SearchResultFragment extends Fragment implements SearchView {
     String endpoint;
+    public static String type;
     RecyclerView allRecycler;
     SearchResultAdapter searchResultAdapter;
     SearchPresenterImp presenterImp;
@@ -46,7 +47,8 @@ public class SearchResultFragment extends Fragment implements SearchView {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         endpoint = SearchResultFragmentArgs.fromBundle(getArguments()).getEndpoint();
-        //Log.i("",endpoint);
+        type = SearchResultFragmentArgs.fromBundle(getArguments()).getType();
+
         allRecycler = view.findViewById(R.id.recyclerView);
         layout = new LinearLayoutManager(getActivity());
         layout.setOrientation(LinearLayoutManager.VERTICAL);

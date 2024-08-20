@@ -2,57 +2,40 @@ package com.example.foodplanner_project;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MealDetailsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MealDetailsFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+import Home.HomePresenter;
+import Home.HomeView;
+import Home.Meal;
+import Home.onMealClickListener;
+import MyPlan.MealPlan;
+import Search.MealDetailsPresenterImp;
+import db.HomeAdapter;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class MealDetailsFragment extends Fragment implements onMealClickListener, HomeView {
+    public static String mealname;
+    RecyclerView allRecycler;
+    HomeAdapter homeAdapter;
+    HomePresenter homePresenter;
+    LinearLayoutManager layout;
 
-    public MealDetailsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MealDetailsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MealDetailsFragment newInstance(String param1, String param2) {
-        MealDetailsFragment fragment = new MealDetailsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -60,5 +43,48 @@ public class MealDetailsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_meal_details, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mealname = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealname();
+
+        allRecycler = view.findViewById(R.id.recyclerView);
+        layout = new LinearLayoutManager(getActivity());
+        layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        homePresenter = new MealDetailsPresenterImp(this,getActivity());
+
+        homeAdapter = new HomeAdapter(getActivity(),new ArrayList<>(),this,getViewLifecycleOwner().getLifecycle());
+        allRecycler.setLayoutManager(layout);
+        allRecycler.setAdapter(homeAdapter);
+
+    }
+
+    @Override
+    public void ShowData(List<Meal> meals) {
+        homeAdapter.SetList(meals);
+        homeAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void ShowErrorMsg(String errorMsg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage(errorMsg).setTitle("An error ocured");
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void OnmealclickListener(Meal meal) {
+        Toast.makeText(getActivity(), "Adding item!", Toast.LENGTH_SHORT).show();
+        homePresenter.addToFavorite(meal);
+    }
+
+    @Override
+    public void clickListener(MealPlan mealPlan) {
+        Toast.makeText(getActivity(), "Adding item to your plan!", Toast.LENGTH_SHORT).show();
+        homePresenter.addToPlan(mealPlan);
     }
 }

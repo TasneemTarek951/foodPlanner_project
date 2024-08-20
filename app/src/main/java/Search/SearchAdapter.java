@@ -9,19 +9,18 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.foodplanner_project.SearchFragment;
 import com.example.foodplanner_project.SearchFragmentDirections;
 
 import java.util.List;
 
 public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
     private List<String> itemList;
-    onItemclickListener listener;
     String str;
 
 
-    public SearchAdapter(List<String> itemList,onItemclickListener li){
+    public SearchAdapter(List<String> itemList){
         this.itemList = itemList;
-        listener = li;
     }
     @NonNull
     @Override
@@ -37,8 +36,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             @Override
             public void onClick(View view) {
                 str = holder.textView.getText().toString();
-                String endpoint = listener.onitemlistener(str);
-                SearchFragmentDirections.ActionSearchFragmentToSearchResultFragment action = SearchFragmentDirections.actionSearchFragmentToSearchResultFragment(endpoint);
+                SearchFragmentDirections.ActionSearchFragmentToSearchResultFragment action = SearchFragmentDirections.actionSearchFragmentToSearchResultFragment(str, SearchFragment.str1);
                 Navigation.findNavController(view).navigate(action);
 
             }

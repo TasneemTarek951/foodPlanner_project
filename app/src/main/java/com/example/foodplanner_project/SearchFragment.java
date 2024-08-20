@@ -5,7 +5,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,12 +19,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import Search.SearchAdapter;
-import Search.onItemclickListener;
 
-public class SearchFragment extends Fragment implements onItemclickListener {
+public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
     private SearchAdapter searchAdapter;
-    String str1;
+    public static String str1;
 
 
 
@@ -53,13 +51,13 @@ public class SearchFragment extends Fragment implements onItemclickListener {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         List<String> defaultItems = Arrays.asList("", "", "");
-        searchAdapter = new SearchAdapter(defaultItems,this);
+        searchAdapter = new SearchAdapter(defaultItems);
         recyclerView.setAdapter(searchAdapter);
 
         chipCountry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                str1 = "filter.php?a=";
+                str1 = "Country";
                 List<String> iphoneItems = Arrays.asList("American", "British", "Canadian","Chinese","Croatian","Dutch","Egyptian","French","Greek","Indian");
                 searchAdapter.updateList(iphoneItems);
             }
@@ -68,7 +66,7 @@ public class SearchFragment extends Fragment implements onItemclickListener {
         chipCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                str1 = "filter.php?c=";
+                str1 = "Category";
                 List<String> iphoneItems = Arrays.asList("Beef", "Breakfast", "Chicken","Dessert","Goat","Lamb","Miscellaneous","Pasta","Seafood","Vegetarian");
                 searchAdapter.updateList(iphoneItems);
             }
@@ -77,17 +75,12 @@ public class SearchFragment extends Fragment implements onItemclickListener {
         chipIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                str1 = "filter.php?i=";
+                str1 = "Ingredient";
                 List<String> iphoneItems = Arrays.asList("Chicken", "Salmon", "Beef","Avocado","Asparagus","Bacon","Bread","Brandy","Breadcrumbs","Butter");
                 searchAdapter.updateList(iphoneItems);
             }
         });
     }
 
-    @Override
-    public String onitemlistener(String str) {
-        String endpoint = str1 + str;
-        return endpoint;
-    }
 
 }

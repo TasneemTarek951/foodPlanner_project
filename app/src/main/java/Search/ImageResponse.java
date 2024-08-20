@@ -3,15 +3,15 @@ package Search;
 import java.util.List;
 
 public class ImageResponse {
-    private List<Image> imageList;
+    private List<Image> meals;
 
     public ImageResponse(List<Image> images){
-        imageList = images;
+        meals = images;
     }
     public List<Image> getImages(){
-        return imageList;
+        return meals;
     }
     public void setImages(List<Image> images){
-        imageList = images;
+        meals = images;
     }
 }

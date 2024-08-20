@@ -1,5 +1,7 @@
 package Search;
 
+import com.example.foodplanner_project.SearchResultFragment;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,20 +20,57 @@ public class ImageNetwork {
     }
 
     public void Makenetworkcallback(ImageNetworkCallback imageNetworkCallback){
-        imageService.getImages(endpoint).enqueue(new Callback<ImageResponse>() {
+        if(SearchResultFragment.type.equals("Country")){
+            imageService.getImages(endpoint).enqueue(new Callback<ImageResponse>() {
 
-            @Override
-            public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
-                if(response.isSuccessful()){
-                    imageNetworkCallback.onSuccessResult(response.body().getImages());
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    if(response.isSuccessful()){
+                        imageNetworkCallback.onSuccessResult(response.body().getImages());
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ImageResponse> call, Throwable t) {
-                imageNetworkCallback.onfailureResult(t.getMessage());
-                t.printStackTrace();
-            }
-        });
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+                    imageNetworkCallback.onfailureResult(t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }
+        if(SearchResultFragment.type.equals("Category")){
+            imageService.getCategory(endpoint).enqueue(new Callback<ImageResponse>() {
+
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    if(response.isSuccessful()){
+                        imageNetworkCallback.onSuccessResult(response.body().getImages());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+                    imageNetworkCallback.onfailureResult(t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }
+
+        if(SearchResultFragment.type.equals("Ingredient")){
+            imageService.getIngredient(endpoint).enqueue(new Callback<ImageResponse>() {
+
+                @Override
+                public void onResponse(Call<ImageResponse> call, Response<ImageResponse> response) {
+                    if(response.isSuccessful()){
+                        imageNetworkCallback.onSuccessResult(response.body().getImages());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ImageResponse> call, Throwable t) {
+                    imageNetworkCallback.onfailureResult(t.getMessage());
+                    t.printStackTrace();
+                }
+            });
+        }
     }
 }
