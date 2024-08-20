@@ -21,6 +21,8 @@ public class SearchPresenterImp implements ImageNetworkCallback{
         context = con;
         Mealname = name;
         network = new ImageNetwork(Mealname);
+        network.Makenetworkcallback(this);
+
 
     }
     @Override

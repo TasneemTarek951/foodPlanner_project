@@ -120,34 +120,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.addtoplan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                // Create and show the DatePickerDialog
-                DatePickerDialog datePickerDialog = new DatePickerDialog(context,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                // Set the selected date to the calendar
-                                calendar.set(Calendar.YEAR, year);
-                                calendar.set(Calendar.MONTH, monthOfYear);
-                                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                                // Format the date to include the day name
-                                SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, dd/MM/yyyy", Locale.getDefault());
-                                selectedDate = dateFormat.format(calendar.getTime());
-
-                                // Do something with the selected date (like displaying it in a TextView or saving it)
-                                mealPlan.setDay(selectedDate);
-                                listener.clickListener(mealPlan);
-
-                            }
-                        }, year, month, day);
-
-                // Show the dialog
-                datePickerDialog.show();*/
                 showMealSelectionDialog();
 
             }
