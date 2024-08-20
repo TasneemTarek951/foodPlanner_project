@@ -1,6 +1,7 @@
 package Search;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.navigation.Navigation;
 

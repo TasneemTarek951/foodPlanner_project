@@ -7,6 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import Home.Meal;
+import MyPlan.MealPlan;
+import MyPlan.PlanDAO;
 
 
 @Database(entities = {Meal.class},version = 1,exportSchema = false)

@@ -23,4 +23,5 @@
     <string name="add_fav">Add to fav</string>
     <string name="add_plane">Add to plan</string>
     <string name="remove">Remove from fav</string>
+    <string name="removeplan">Remove From plan</string>
 </resources>

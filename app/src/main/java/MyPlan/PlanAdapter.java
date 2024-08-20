@@ -1,4 +1,4 @@
-package Favofite;
+package MyPlan;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -19,83 +19,86 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTubePlayerView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import Home.Meal;
+import Favofite.FavoriteAdapter;
 
-public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder>{
+public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder>{
     private Context context;
-    private List<Meal> mealList = new ArrayList<Meal>();
-    private onFavoriteClickListener onFavoriteClickListener;
+    private List<MealPlan> mealPlanList;
+    private onPlanClickListener onPlanClickListener;
     private Lifecycle lifecycle;
 
-    public FavoriteAdapter(Context con,List<Meal> meals,onFavoriteClickListener listener,Lifecycle life){
+
+    public PlanAdapter(Context con,List<MealPlan> mealsplan,onPlanClickListener listener,Lifecycle life){
         context = con;
-        mealList = meals;
-        onFavoriteClickListener = listener;
+        mealPlanList = mealsplan;
+        onPlanClickListener = listener;
         lifecycle = life;
     }
 
-    public void setList(List<Meal> meals){
-        mealList = meals;
+    public void setList(List<MealPlan> mealsplan){
+        mealPlanList = mealsplan;
         notifyDataSetChanged();
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View row = inflater.inflate(R.layout.fav_meal_layout,parent,false);
-        ViewHolder viewHolder = new ViewHolder(row);
+        View row = inflater.inflate(R.layout.plane_meal,parent,false);
+        PlanAdapter.ViewHolder viewHolder = new PlanAdapter.ViewHolder(row);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Meal meal = mealList.get(position);
-        holder.strMeal.setText(meal.getStrMeal());
-        holder.strArea.setText(meal.getstrArea());
-        holder.strInstructions.setText(meal.getStrInstructions());
-        holder.strIngredient1.setText(meal.getStrIngredient1());
-        holder.strIngredient2.setText(meal.getStrIngredient2());
-        holder.strIngredient3.setText(meal.getStrIngredient3());
-        holder.strIngredient4.setText(meal.getStrIngredient4());
-        holder.strIngredient5.setText(meal.getStrIngredient5());
-        holder.strIngredient6.setText(meal.getStrIngredient6());
-        holder.strIngredient7.setText(meal.getStrIngredient7());
-        holder.strIngredient8.setText(meal.getStrIngredient8());
+        MealPlan mealPlan = mealPlanList.get(position);
+        holder.day.setText(mealPlan.getDay());
+        holder.strArea.setText(mealPlan.getstrArea());
+        holder.strMeal.setText(mealPlan.getStrMeal());
+        holder.strInstructions.setText(mealPlan.getStrInstructions());
+        holder.strIngredient1.setText(mealPlan.getStrIngredient1());
+        holder.strIngredient2.setText(mealPlan.getStrIngredient2());
+        holder.strIngredient3.setText(mealPlan.getStrIngredient3());
+        holder.strIngredient4.setText(mealPlan.getStrIngredient4());
+        holder.strIngredient5.setText(mealPlan.getStrIngredient5());
+        holder.strIngredient6.setText(mealPlan.getStrIngredient6());
+        holder.strIngredient7.setText(mealPlan.getStrIngredient7());
+        holder.strIngredient8.setText(mealPlan.getStrIngredient8());
 
-        Glide.with(context).load(meal.getStrMealThumb()).apply(new RequestOptions().override(150,150).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)).into(holder.strMealThumb);
+
+        Glide.with(context).load(mealPlan.getStrMealThumb()).apply(new RequestOptions().override(150,150).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)).into(holder.strMealThumb);
+
 
         holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(YouTubePlayer youTubePlayer) {
-                String videoId = extractYouTubeVideoId(meal.getStrYoutube());
+                String videoId = extractYouTubeVideoId(mealPlan.getStrYoutube());
                 youTubePlayer.cueVideo(videoId, 0);
             }
         });
         lifecycle.addObserver(holder.strYoutube);
 
 
-
-        holder.removefromfav.setOnClickListener(new View.OnClickListener() {
+        holder.removefromplan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFavoriteClickListener.OnfavClickListener(meal);
+                onPlanClickListener.onplanclicklistener(mealPlan);
             }
         });
+
 
     }
 
     @Override
     public int getItemCount() {
-        return mealList.size();
+        return mealPlanList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView day;
         TextView strMeal;
         TextView strArea;
         TextView strInstructions;
@@ -109,9 +112,11 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         TextView strIngredient6;
         TextView strIngredient7;
         TextView strIngredient8;
-        Button removefromfav;
+        Button removefromplan;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            day = itemView.findViewById(R.id.date);
             strMeal = itemView.findViewById(R.id.meal_name);
             strArea = itemView.findViewById(R.id.meal_country);
             strInstructions = itemView.findViewById(R.id.meal_instructions);
@@ -125,7 +130,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             strIngredient8 = itemView.findViewById(R.id.ing_8);
             strMealThumb = itemView.findViewById(R.id.meal_image);
             strYoutube = itemView.findViewById(R.id.video_view);
-            removefromfav = itemView.findViewById(R.id.remove_fav);
+            removefromplan = itemView.findViewById(R.id.remove_plan);
         }
     }
 

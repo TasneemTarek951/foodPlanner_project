@@ -29,6 +29,8 @@ public class MainActivity2 extends AppCompatActivity {
     NavController navController;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+    String username;
+    public static String type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +49,8 @@ public class MainActivity2 extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView,navController);
 
         Intent intent = getIntent();
-        String username = intent.getStringExtra(MainActivity.username);
-        String type = intent.getStringExtra(MainActivity.type);
+        username = intent.getStringExtra(MainActivity.username);
+        type = intent.getStringExtra(MainActivity.type);
 
         View headerView = navigationView.getHeaderView(0);
         TextView textView = headerView.findViewById(R.id.name_tv);

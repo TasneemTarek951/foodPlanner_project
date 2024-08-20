@@ -22,6 +22,7 @@ import Home.HomePresenterImp;
 import Home.HomeView;
 import Home.Meal;
 import Home.onMealClickListener;
+import MyPlan.MealPlan;
 import db.HomeAdapter;
 
 public class HomeFragment extends Fragment implements onMealClickListener, HomeView {
@@ -76,5 +77,11 @@ public class HomeFragment extends Fragment implements onMealClickListener, HomeV
         Toast.makeText(getActivity(), "Adding item!", Toast.LENGTH_SHORT).show();
         homePresenter.addToFavorite(meal);
 
+    }
+
+    @Override
+    public void clickListener(MealPlan mealPlan) {
+        Toast.makeText(getActivity(), "Adding item to your plan!", Toast.LENGTH_SHORT).show();
+        homePresenter.addToPlan(mealPlan);
     }
 }

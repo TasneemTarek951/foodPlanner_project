@@ -4,6 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
+import MyPlan.MealPlan;
 import db.Repository;
 
 public class HomePresenterImp implements NetworkCallback,HomePresenter {
@@ -24,6 +25,11 @@ public class HomePresenterImp implements NetworkCallback,HomePresenter {
     @Override
     public void addToFavorite(Meal meal) {
           repo.insert(meal);
+    }
+
+    @Override
+    public void addToPlan(MealPlan mealPlan) {
+        repo.inserttoplan(mealPlan);
     }
 
     @Override

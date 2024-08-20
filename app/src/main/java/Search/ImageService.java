@@ -5,6 +5,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 
 public interface ImageService {
-    @GET("{endpoint}")
-    public Call<ImageResponse> getImages(@Path("endpoint") String endpoint);
+    @GET
+    public Call<ImageResponse> getImages(String endpoint);
 }
