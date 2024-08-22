@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "885326836560",
+    "firebase_url": "https://foodyproject-accc3-default-rtdb.firebaseio.com",
+    "project_id": "foodyproject-accc3",
+    "storage_bucket": "foodyproject-accc3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:885326836560:android:7d7c5a5acf89f0e515b255",
+        "android_client_info": {
+          "package_name": "com.example.foodplanner_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-DkLwtTWK4WgNVIQuET-f5MwAyIjeXg8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

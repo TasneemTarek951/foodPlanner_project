@@ -50,6 +50,7 @@
         android:layout_marginStart="144dp"
         android:layout_marginTop="448dp"
         android:backgroundTint="#BD4239"
+        android:onClick="buttonGoogleSignin"
         android:text="@string/log_G"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

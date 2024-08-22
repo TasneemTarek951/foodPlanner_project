@@ -55,6 +55,7 @@ public class LoginFragment extends Fragment {
         mailtext = view.findViewById(R.id.email_text);
         passtext = view.findViewById(R.id.password_text);
 
+
         log_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,24 +63,33 @@ public class LoginFragment extends Fragment {
                 Passsword = passtext.getText().toString();
                 Username = extractTextBeforeNumber(email);
 
-                SharedPreferences storage = requireContext().getSharedPreferences(RegisterFragment.str, Context.MODE_PRIVATE);
-                String m = storage.getString(RegisterFragment.mail,"N/A");
-                String p = storage.getString(RegisterFragment.pass,"N/A");
-                if(!(m.equals("N/A") && p.equals("N/A"))){
-                    if(m.equals(email) && p.equals(Passsword)){
-                        Toast.makeText(getActivity(), "success login!", Toast.LENGTH_SHORT).show();
+                // Save email and password in SharedPreferences
+                SharedPreferences storage = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = storage.edit();
+                editor.putString("Email", email);
+                editor.putString("Password", Passsword);
+                editor.apply(); // Save the data
+
+                // Fetch saved email and password
+                String savedEmail = storage.getString("Email", "N/A");
+                String savedPassword = storage.getString("Password", "N/A");
+
+                if(!savedEmail.equals("N/A") && !savedPassword.equals("N/A")) {
+                    if(savedEmail.equals(email) && savedPassword.equals(Passsword)) {
+                        Toast.makeText(getActivity(), "Successful login!", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(getActivity(), MainActivity2.class);
-                        intent.putExtra(MainActivity.username,Username);
-                        intent.putExtra(MainActivity.type,"Login");
+                        intent.putExtra(MainActivity.username, Username);
+                        intent.putExtra(MainActivity.type, "Login");
                         startActivity(intent);
-                    }else{
-                        Toast.makeText(getActivity(), "invalid user!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
                     }
-                }else{
-                    Toast.makeText(getActivity(), "invalid user!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
 
 
 

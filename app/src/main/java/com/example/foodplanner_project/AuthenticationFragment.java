@@ -1,6 +1,9 @@
 package com.example.foodplanner_project;
 
+
+
 import android.content.Intent;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,18 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
 
 public class AuthenticationFragment extends Fragment {
-
-
 
 
     Button regist;
@@ -72,16 +66,13 @@ public class AuthenticationFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), MainActivity2.class);
-                intent.putExtra(MainActivity.username,"Guest");
-                intent.putExtra(MainActivity.type,"Guest");
+                intent.putExtra(MainActivity.username, "Guest");
+                intent.putExtra(MainActivity.type, "Guest");
                 startActivity(intent);
             }
         });
 
-
-
     }
-
 
 
 }

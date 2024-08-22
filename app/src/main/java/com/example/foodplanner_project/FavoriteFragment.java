@@ -13,6 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +55,7 @@ public class FavoriteFragment extends Fragment implements onFavoriteClickListene
         layout = new LinearLayoutManager(getActivity());
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
 
+
         presenterImp = new FavoritePresenterImp(getActivity(),this,this);
 
         favoriteAdapter = new FavoriteAdapter(getActivity(),new ArrayList<Meal>(),this,getViewLifecycleOwner().getLifecycle());
@@ -70,6 +76,8 @@ public class FavoriteFragment extends Fragment implements onFavoriteClickListene
     public void OnfavClickListener(Meal meal) {
         Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
         presenterImp.removefromFavorite(meal);
+
+
 
     }
 }

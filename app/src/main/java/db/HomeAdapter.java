@@ -49,6 +49,8 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
     private String selectedMeal;
     private MealPlan mealPlan = new MealPlan();
 
+
+
     public HomeAdapter(Context con,List<Meal> mealList,onMealClickListener li,Lifecycle life){
         context = con;
         meals = mealList;

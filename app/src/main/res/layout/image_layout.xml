@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_gravity="bottom"
-        android:background="#92000000"
+        android:background="#45161111"
         android:textColor="#FDFAFA"
         android:textSize="20sp" />
 

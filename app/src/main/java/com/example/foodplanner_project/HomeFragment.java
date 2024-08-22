@@ -14,6 +14,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +57,7 @@ public class HomeFragment extends Fragment implements onMealClickListener, HomeV
         allRecycler = view.findViewById(R.id.recyclerView);
         layout = new LinearLayoutManager(getActivity());
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+
 
         homePresenter = new HomePresenterImp(this,getActivity());
         homeAdapter = new HomeAdapter(getActivity(),new ArrayList<>(),this,getViewLifecycleOwner().getLifecycle());

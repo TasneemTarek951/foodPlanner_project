@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,9 @@ import Home.HomeView;
 import Home.Meal;
 import Home.onMealClickListener;
 import MyPlan.MealPlan;
+
 import Search.MealDetailsPresenterImp;
+
 import db.HomeAdapter;
 
 public class MealDetailsFragment extends Fragment implements onMealClickListener, HomeView {
@@ -33,9 +36,11 @@ public class MealDetailsFragment extends Fragment implements onMealClickListener
     LinearLayoutManager layout;
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -48,6 +53,12 @@ public class MealDetailsFragment extends Fragment implements onMealClickListener
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+
+
+
+
+
         mealname = MealDetailsFragmentArgs.fromBundle(getArguments()).getMealname();
 
         allRecycler = view.findViewById(R.id.recyclerView);
@@ -81,6 +92,8 @@ public class MealDetailsFragment extends Fragment implements onMealClickListener
         Toast.makeText(getActivity(), "Adding item!", Toast.LENGTH_SHORT).show();
         homePresenter.addToFavorite(meal);
     }
+
+
 
     @Override
     public void clickListener(MealPlan mealPlan) {

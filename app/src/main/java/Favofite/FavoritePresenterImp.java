@@ -6,6 +6,10 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.List;
 
 import Home.Meal;
@@ -30,6 +34,7 @@ public class FavoritePresenterImp implements FavoritePresenter{
         };
         LiveData<List<Meal>> observable = repo.getStoredmeals();
         observable.observe(owner,observer);
+
     }
 
     @Override

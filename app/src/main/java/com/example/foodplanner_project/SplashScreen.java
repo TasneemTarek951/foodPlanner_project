@@ -24,9 +24,6 @@ public class SplashScreen extends AppCompatActivity {
         appname = findViewById(R.id.app_name);
         lottie = findViewById(R.id.Lottie);
 
-        // Animations
-        appname.animate().translationY(-1400).setDuration(2700).setStartDelay(0);
-        lottie.animate().translationY(2000).setDuration(2000).setStartDelay(2900);
 
         // Delay transition to MainActivity by 20 seconds (20000 milliseconds)
         new Handler().postDelayed(new Runnable() {
@@ -36,6 +33,6 @@ public class SplashScreen extends AppCompatActivity {
                 startActivity(i);
                 finish(); // Finish SplashScreen so the user can't return to it
             }
-        }, 4000); // 20 seconds delay
+        }, 3000); // 20 seconds delay
     }
 }

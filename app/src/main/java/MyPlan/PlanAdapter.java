@@ -1,6 +1,7 @@
 package MyPlan;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,11 +73,28 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder>{
         Glide.with(context).load(mealPlan.getStrMealThumb()).apply(new RequestOptions().override(150,150).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)).into(holder.strMealThumb);
 
 
-        holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+        /*holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(YouTubePlayer youTubePlayer) {
                 String videoId = extractYouTubeVideoId(mealPlan.getStrYoutube());
                 youTubePlayer.cueVideo(videoId, 0);
+            }
+        });
+        lifecycle.addObserver(holder.strYoutube);*/
+
+
+        holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(YouTubePlayer youTubePlayer) {
+                String videoId = extractYouTubeVideoId(mealPlan.getStrYoutube());
+
+                if (videoId != null && !videoId.isEmpty()) {
+                    youTubePlayer.cueVideo(videoId, 0);
+                } else {
+                    // Handle the case where the videoId is null or empty
+                    Log.e("PlanAdapter", "Invalid YouTube video ID: " + mealPlan.getStrYoutube());
+                    // Optionally, you can show a message to the user or take other actions
+                }
             }
         });
         lifecycle.addObserver(holder.strYoutube);
