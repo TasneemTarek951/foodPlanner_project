@@ -1,5 +1,6 @@
 package Search;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +11,25 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner_project.R;
 import com.example.foodplanner_project.SearchFragment;
 import com.example.foodplanner_project.SearchFragmentDirections;
 
 import java.util.List;
 
-import db.Category;
-import db.Country;
 import db.Ingredient;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
-    List<Country> countries;
+public class ingredientAdapter extends RecyclerView.Adapter<ingredientAdapter.ViewHolder>{
+
+    List<Ingredient> ingredients;
     String str;
+    Context context;
 
-
-    public SearchAdapter(List<Country> countries){
-        this.countries = countries;
+    public ingredientAdapter(List<Ingredient> ingredients,Context con){
+        this.ingredients = ingredients;
+        context = con;
     }
     @NonNull
     @Override
@@ -37,8 +40,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Country country =  countries.get(position);
-        holder.textView.setText(country.getStrArea());
+        Ingredient ingredient = ingredients.get(position);
+        holder.textView.setText(ingredient.getStrIngredient());
+
+        Glide.with(context).load("https://www.themealdb.com/images/ingredients/"+ingredient.getStrIngredient()+".png").apply(new RequestOptions().override(150,150).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)).into(holder.img);
+
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +60,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return countries != null ? countries.size() : 0;
+        return ingredients != null ? ingredients.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,8 +72,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             img = itemView.findViewById(R.id.meal_image);
         }
     }
-    public void updateList(List<Country> countries) {
-        this.countries = countries;
+
+    public void updateList(List<Ingredient> ingredients){
+        this.ingredients = ingredients;
         notifyDataSetChanged();
     }
 }

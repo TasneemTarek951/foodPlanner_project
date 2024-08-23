@@ -15,15 +15,29 @@ import android.view.ViewGroup;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import Search.CategoryAdapter;
+import Search.ImageNetwork;
+import Search.ListCallback;
 import Search.SearchAdapter;
+import Search.ingredientAdapter;
+import db.Category;
+import db.Country;
+import db.Ingredient;
 
 public class SearchFragment extends Fragment {
     private RecyclerView recyclerView;
-    private SearchAdapter searchAdapter;
+    SearchAdapter searchAdapter;
+    ingredientAdapter ingredientAdapter;
+    CategoryAdapter categoryAdapter;
     public static String str1;
+    List<Country> countries;
+    List<Category> categories;
+    List<Ingredient> ingredients;
+    ImageNetwork imageNetwork;
 
 
 
@@ -50,16 +64,56 @@ public class SearchFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        List<String> defaultItems = Arrays.asList("", "", "");
-        searchAdapter = new SearchAdapter(defaultItems);
-        recyclerView.setAdapter(searchAdapter);
+
+        //searchAdapter = new SearchAdapter(defaultItems);
+        //recyclerView.setAdapter(searchAdapter);
+        imageNetwork = new ImageNetwork();
+        imageNetwork.Countrynetworkcallback(new ListCallback<Country>() {
+            @Override
+            public void onSuccess(List<Country> list) {
+                searchAdapter = new SearchAdapter(list);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                 t.printStackTrace();
+            }
+        });
+
+        imageNetwork.Categorynetworkcallback(new ListCallback<Category>() {
+            @Override
+            public void onSuccess(List<Category> list) {
+                categoryAdapter = new CategoryAdapter(list,getActivity());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+
+        imageNetwork.Ingredientnetworkcallback(new ListCallback<Ingredient>() {
+            @Override
+            public void onSuccess(List<Ingredient> list) {
+                ingredientAdapter = new ingredientAdapter(list,getActivity());
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                t.printStackTrace();
+            }
+        });
+
+
+
+
 
         chipCountry.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 str1 = "Country";
-                List<String> iphoneItems = Arrays.asList("American", "British", "Canadian","Chinese","Croatian","Dutch","Egyptian","French","Greek","Indian");
-                searchAdapter.updateList(iphoneItems);
+                recyclerView.setAdapter(searchAdapter);
             }
         });
 
@@ -67,8 +121,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 str1 = "Category";
-                List<String> iphoneItems = Arrays.asList("Beef", "Breakfast", "Chicken","Dessert","Goat","Lamb","Miscellaneous","Pasta","Seafood","Vegetarian");
-                searchAdapter.updateList(iphoneItems);
+                recyclerView.setAdapter(categoryAdapter);
             }
         });
 
@@ -76,8 +129,7 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 str1 = "Ingredient";
-                List<String> iphoneItems = Arrays.asList("Chicken", "Salmon", "Beef","Avocado","Asparagus","Bacon","Bread","Brandy","Breadcrumbs","Butter");
-                searchAdapter.updateList(iphoneItems);
+                recyclerView.setAdapter(ingredientAdapter);
             }
         });
     }

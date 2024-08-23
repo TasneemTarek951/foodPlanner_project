@@ -2,6 +2,7 @@ package Search;
 
 import java.util.List;
 
+import db.Category;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -19,6 +20,14 @@ public interface ImageService {
     @GET("filter.php")
     public Call<ImageResponse> getIngredient(@Query("i") String endpoint);
 
+    @GET("categories.php")
+    public Call<CategoryResponse> getCategories();
+
+    @GET("list.php?a=list")
+    public Call<CountryResponse> getcountries();
+
+    @GET("list.php?i=list")
+    public Call<IngredientResponse> getingredients();
 
 
 

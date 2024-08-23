@@ -1,5 +1,6 @@
 package Search;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner_project.R;
 import com.example.foodplanner_project.SearchFragment;
 import com.example.foodplanner_project.SearchFragmentDirections;
@@ -17,17 +20,17 @@ import com.example.foodplanner_project.SearchFragmentDirections;
 import java.util.List;
 
 import db.Category;
-import db.Country;
-import db.Ingredient;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder>{
-    List<Country> countries;
+public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder>{
+    List<Category> categories;
     String str;
+    Context context;
 
-
-    public SearchAdapter(List<Country> countries){
-        this.countries = countries;
+    public CategoryAdapter(List<Category> categories,Context con){
+        this.categories = categories;
+        context = con;
     }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -37,8 +40,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Country country =  countries.get(position);
-        holder.textView.setText(country.getStrArea());
+        Category category = categories.get(position);
+        holder.textView.setText(category.getStrCategory());
+
+        Glide.with(context).load(category.getStrCategoryThumb()).apply(new RequestOptions().override(150,150).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)).into(holder.img);
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,13 +54,13 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                 Navigation.findNavController(view).navigate(action);
             }
         });
-
     }
 
     @Override
     public int getItemCount() {
-        return countries != null ? countries.size() : 0;
+        return categories != null ? categories.size() : 0;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView textView;
@@ -65,8 +71,9 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
             img = itemView.findViewById(R.id.meal_image);
         }
     }
-    public void updateList(List<Country> countries) {
-        this.countries = countries;
+
+    public void updateList(List<Category> categories){
+        this.categories = categories;
         notifyDataSetChanged();
     }
 }
