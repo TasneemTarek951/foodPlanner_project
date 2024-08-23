@@ -120,7 +120,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.addtofav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                listener.OnmealclickListener(meal);
+                if(MainActivity2.type.equals("Guest")){
+                    Toast.makeText(context, "Login First", Toast.LENGTH_SHORT).show();
+                }else{
+                    listener.OnmealclickListener(meal);
+                }
             }
         });
 
@@ -128,7 +132,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.addtoplan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showMealSelectionDialog();
+                if(MainActivity2.type.equals("Guest")){
+                    Toast.makeText(context, "Login First", Toast.LENGTH_SHORT).show();
+                }else{
+                    showMealSelectionDialog();
+                }
 
             }
         });
@@ -176,11 +184,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
             strYoutube = itemView.findViewById(R.id.video_view);
             addtofav = itemView.findViewById(R.id.add_fav);
             addtoplan = itemView.findViewById(R.id.add_plan);
-            if(MainActivity2.type.equals("Guest")){
-                addtofav.setVisibility(itemView.GONE);
-                addtoplan.setVisibility(itemView.GONE);
-
-            }
         }
     }
 

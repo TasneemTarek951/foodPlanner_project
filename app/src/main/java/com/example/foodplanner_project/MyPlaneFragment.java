@@ -13,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +35,10 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
     LinearLayoutManager layout;
     PlanPresenterImp presenterImp;
     PlanAdapter adapter;
+
+    private FirebaseFirestore firestore;
+    private FirebaseAuth firebaseAuth;
+    FirebaseUser currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,10 +59,34 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
         layout = new LinearLayoutManager(getActivity());
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
 
+        firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
+
         presenterImp = new PlanPresenterImp(getActivity(),this,this);
         adapter = new PlanAdapter(getActivity(),new ArrayList<MealPlan>(),this,getViewLifecycleOwner().getLifecycle());
         recycl.setLayoutManager(layout);
         recycl.setAdapter(adapter);
+
+        if (currentUser != null) {
+            firestore.collection("users").document(currentUser.getUid())
+                    .collection("mealPlans")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<MealPlan> mealPlanList = new ArrayList<>();
+                            for (DocumentSnapshot document : task.getResult()) {
+                                MealPlan mealPlan = document.toObject(MealPlan.class);
+                                mealPlanList.add(mealPlan);
+                            }
+                            adapter.setList(mealPlanList);
+                            adapter.notifyDataSetChanged();
+                        } else {
+                            getActivity().runOnUiThread(() ->
+                                    Toast.makeText(getContext(), "Error getting meal plans: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show());
+                        }
+                    });
+        }
 
     }
 
@@ -67,6 +101,16 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
     public void onplanclicklistener(MealPlan mealPlan) {
         Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
         presenterImp.RemoveFromPlan(mealPlan);
+        if (currentUser != null) {
+            DocumentReference mealPlanRef = firestore.collection("users").document(currentUser.getUid())
+                    .collection("mealPlans").document(mealPlan.getStrMeal());
+
+            mealPlanRef.delete()
+                    .addOnSuccessListener(aVoid -> getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Meal plan deleted successfully from Firestore!", Toast.LENGTH_SHORT).show()))
+                    .addOnFailureListener(e -> getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Error deleting meal plan: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
+        }
 
     }
 }

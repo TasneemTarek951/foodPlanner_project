@@ -24,6 +24,9 @@ import android.net.NetworkInfo;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseUser;
+
+import db.FireService;
 
 public class MainActivity2 extends AppCompatActivity {
     NavController navController;
@@ -31,11 +34,16 @@ public class MainActivity2 extends AppCompatActivity {
     NavigationView navigationView;
     String username;
     public static String type;
+
+    private FireService fireService;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        fireService = new FireService(this);
 
         drawerLayout = findViewById(R.id.main);
         navigationView = findViewById(R.id.navigation);
@@ -66,7 +74,18 @@ public class MainActivity2 extends AppCompatActivity {
         item3.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                finish();
+                fireService.signOut(MainActivity2.this, new FireService.fireCallback() {
+                    @Override
+                    public void onSuccess(FirebaseUser user) {
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        Toast.makeText(MainActivity2.this, "failed signOut!", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
                 return true;
             }
         });
@@ -74,6 +93,7 @@ public class MainActivity2 extends AppCompatActivity {
         if(type.equals("Guest")){
             item1.setEnabled(false);
             item2.setEnabled(false);
+            item3.setEnabled(false);
         }
 
 

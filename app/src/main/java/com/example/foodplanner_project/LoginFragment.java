@@ -17,8 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import db.FireService;
 
 
 public class LoginFragment extends Fragment {
@@ -31,7 +35,8 @@ public class LoginFragment extends Fragment {
     String Passsword;
 
     String Username;
-
+    private static final String PREFS_NAME = "LoginData";
+    private FireService fireService;
 
 
 
@@ -55,6 +60,8 @@ public class LoginFragment extends Fragment {
         mailtext = view.findViewById(R.id.email_text);
         passtext = view.findViewById(R.id.password_text);
 
+        fireService = new FireService(getActivity());
+
 
         log_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,28 +69,27 @@ public class LoginFragment extends Fragment {
                 email = mailtext.getText().toString();
                 Passsword = passtext.getText().toString();
                 Username = extractTextBeforeNumber(email);
+                if(!email.equals("N/A") && !Passsword.equals("N/A")) {
+                    fireService.login(email, Passsword, new FireService.fireCallback() {
+                        @Override
+                        public void onSuccess(FirebaseUser user) {
+                            SharedPreferences storage = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = storage.edit();
+                            editor.putString("Email", email);
+                            editor.putString("Password", Passsword);
+                            editor.apply();
+                            Toast.makeText(getActivity(), "Successful login!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), MainActivity2.class);
+                            intent.putExtra(MainActivity.username, Username);
+                            intent.putExtra(MainActivity.type, "Login");
+                            startActivity(intent);
+                        }
 
-                // Save email and password in SharedPreferences
-                SharedPreferences storage = requireContext().getSharedPreferences("LoginData", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = storage.edit();
-                editor.putString("Email", email);
-                editor.putString("Password", Passsword);
-                editor.apply(); // Save the data
+                        @Override
+                        public void onFailure(String message) {
 
-                // Fetch saved email and password
-                String savedEmail = storage.getString("Email", "N/A");
-                String savedPassword = storage.getString("Password", "N/A");
-
-                if(!savedEmail.equals("N/A") && !savedPassword.equals("N/A")) {
-                    if(savedEmail.equals(email) && savedPassword.equals(Passsword)) {
-                        Toast.makeText(getActivity(), "Successful login!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getActivity(), MainActivity2.class);
-                        intent.putExtra(MainActivity.username, Username);
-                        intent.putExtra(MainActivity.type, "Login");
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
-                    }
+                        }
+                    });
                 } else {
                     Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
                 }

@@ -38,6 +38,10 @@ public class HomeFragment extends Fragment implements onMealClickListener, HomeV
     HomePresenter homePresenter;
     LinearLayoutManager layout;
 
+    private FirebaseFirestore firestore;
+    private FirebaseAuth auth;
+    private FirebaseUser user;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +61,10 @@ public class HomeFragment extends Fragment implements onMealClickListener, HomeV
         allRecycler = view.findViewById(R.id.recyclerView);
         layout = new LinearLayoutManager(getActivity());
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        firestore = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
 
         homePresenter = new HomePresenterImp(this,getActivity());
@@ -82,14 +90,47 @@ public class HomeFragment extends Fragment implements onMealClickListener, HomeV
 
     @Override
     public void OnmealclickListener(Meal meal) {
-        Toast.makeText(getActivity(), "Adding item!", Toast.LENGTH_SHORT).show();
-        homePresenter.addToFavorite(meal);
+            Toast.makeText(getActivity(), "Adding item!", Toast.LENGTH_SHORT).show();
+            homePresenter.addToFavorite(meal);
+
+
+            if (user != null) {
+                firestore.runTransaction(transaction -> {
+                            DocumentReference mealRef = firestore.collection("users").document(user.getUid())
+                                    .collection("favoritemeals").document(meal.getStrMeal());
+
+                            Meal existingMeal = transaction.get(mealRef).toObject(Meal.class);
+
+                            if (existingMeal == null) {
+                                transaction.set(mealRef, meal);
+                            }
+
+                            return null;
+                        }).addOnSuccessListener(aVoid -> getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "Meal added to favorites and saved to Firestore!", Toast.LENGTH_SHORT).show()))
+                        .addOnFailureListener(e -> getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "Error saving to Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
+            }
+
+
 
     }
 
     @Override
     public void clickListener(MealPlan mealPlan) {
-        Toast.makeText(getActivity(), "Adding item to your plan!", Toast.LENGTH_SHORT).show();
-        homePresenter.addToPlan(mealPlan);
+            Toast.makeText(getActivity(), "Adding item to your plan!", Toast.LENGTH_SHORT).show();
+            homePresenter.addToPlan(mealPlan);
+
+            if (user != null) {
+                firestore.collection("users").document(user.getUid())
+                        .collection("mealPlans").document(mealPlan.getStrMeal())
+                        .set(mealPlan)
+                        .addOnSuccessListener(aVoid -> getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "Plan saved successfully to Firestore!", Toast.LENGTH_SHORT).show()))
+                        .addOnFailureListener(e -> getActivity().runOnUiThread(() ->
+                                Toast.makeText(getContext(), "Error saving to Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
+
+            }
+
     }
 }

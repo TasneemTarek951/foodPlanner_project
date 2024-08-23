@@ -1,8 +1,9 @@
 package Search;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ImageService {
@@ -17,6 +18,7 @@ public interface ImageService {
 
     @GET("filter.php")
     public Call<ImageResponse> getIngredient(@Query("i") String endpoint);
+
 
 
 

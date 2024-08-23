@@ -8,6 +8,7 @@
     <string name="register">Register</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
+    <string name="default_web_client_id">885326836560-off2dsjd33i45v7ati25rof4548s5jnf.apps.googleusercontent.com</string>
     <string name="cpassword">confirm Password</string>
     <string name="toRegister">"Don't have an account? "</string>
     <string name="tologin">Already Registered?</string>

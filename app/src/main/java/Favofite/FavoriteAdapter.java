@@ -1,6 +1,7 @@
 package Favofite;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,11 +71,25 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         Glide.with(context).load(meal.getStrMealThumb()).apply(new RequestOptions().override(150,150).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)).into(holder.strMealThumb);
 
-        holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+        /*holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
             public void onReady(YouTubePlayer youTubePlayer) {
                 String videoId = extractYouTubeVideoId(meal.getStrYoutube());
                 youTubePlayer.cueVideo(videoId, 0);
+            }
+        });
+        lifecycle.addObserver(holder.strYoutube);*/
+
+        holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
+            @Override
+            public void onReady(YouTubePlayer youTubePlayer) {
+                String videoId = extractYouTubeVideoId(meal.getStrYoutube());
+                if (videoId != null) {
+                    youTubePlayer.cueVideo(videoId, 0);
+                } else {
+                    // Handle the case where videoId is null, e.g., log an error or show a message
+                    Log.e("FavoriteAdapter", "Invalid YouTube video ID");
+                }
             }
         });
         lifecycle.addObserver(holder.strYoutube);

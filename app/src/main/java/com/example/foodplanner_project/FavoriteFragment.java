@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -34,6 +36,10 @@ public class FavoriteFragment extends Fragment implements onFavoriteClickListene
     LinearLayoutManager layout;
     FavoriteAdapter favoriteAdapter;
     FavoritePresenterImp presenterImp;
+
+    private FirebaseFirestore firestore;
+    private FirebaseAuth firebaseAuth;
+    FirebaseUser currentUser;
 
 
     @Override
@@ -55,12 +61,38 @@ public class FavoriteFragment extends Fragment implements onFavoriteClickListene
         layout = new LinearLayoutManager(getActivity());
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
 
+        firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        currentUser = firebaseAuth.getCurrentUser();
+
 
         presenterImp = new FavoritePresenterImp(getActivity(),this,this);
 
         favoriteAdapter = new FavoriteAdapter(getActivity(),new ArrayList<Meal>(),this,getViewLifecycleOwner().getLifecycle());
         recycl.setLayoutManager(layout);
         recycl.setAdapter(favoriteAdapter);
+
+        if (currentUser != null) {
+            firestore.collection("users").document(currentUser.getUid())
+                    .collection("favoritemeals")
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            List<Meal> mealList = new ArrayList<>();
+                            for (DocumentSnapshot document : task.getResult()) {
+                                Meal meal = document.toObject(Meal.class);
+                                mealList.add(meal);
+                            }
+                            favoriteAdapter.setList(mealList);
+                            favoriteAdapter.notifyDataSetChanged();
+                        } else {
+                            getActivity().runOnUiThread(() ->
+                                    Toast.makeText(getContext(), "Error getting meals: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show());
+                        }
+                    });
+        }
+
+
 
 
 
@@ -77,6 +109,16 @@ public class FavoriteFragment extends Fragment implements onFavoriteClickListene
         Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
         presenterImp.removefromFavorite(meal);
 
+        if (currentUser != null) {
+            DocumentReference mealRef = firestore.collection("users").document(currentUser.getUid())
+                    .collection("favoritemeals").document(meal.getStrMeal());
+
+            mealRef.delete()
+                    .addOnSuccessListener(aVoid -> getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Meal deleted successfully from Firestore!", Toast.LENGTH_SHORT).show()))
+                    .addOnFailureListener(e -> getActivity().runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Error deleting meal: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
+        }
 
 
     }

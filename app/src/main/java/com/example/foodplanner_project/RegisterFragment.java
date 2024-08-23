@@ -17,9 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import db.FireService;
 
 
 public class RegisterFragment extends Fragment {
@@ -32,9 +35,8 @@ public class RegisterFragment extends Fragment {
     String email;
     String Passsword;
     String Confirm;
-    public static final String str ="STORAGE";
-    public static final String mail = "EMAIL";
-    public static final String pass = "PASSWORD";
+    private static final String PREFS_NAME = "LoginData";
+    private FireService fireService;
 
     String Username;
 
@@ -63,6 +65,9 @@ public class RegisterFragment extends Fragment {
         confirmtext = view.findViewById(R.id.confirm_text);
         regist = view.findViewById(R.id.regist_btn);
 
+        fireService = new FireService(getActivity());
+
+
 
         regist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,16 +83,27 @@ public class RegisterFragment extends Fragment {
                     if(isValidEmail(email)){
                         if(Passsword.equals(Confirm)){
                             if(validation(Passsword)){
-                                SharedPreferences storage = requireContext().getSharedPreferences(str, Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = storage.edit();
-                                editor.putString(mail,email);
-                                editor.putString(pass,Passsword);
-                                editor.commit();
-                                Toast.makeText(getActivity(), "Saved successfully!", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(getActivity(), MainActivity2.class);
-                                intent.putExtra(MainActivity.username,Username);
-                                intent.putExtra(MainActivity.type,"Register");
-                                startActivity(intent);
+                                fireService.signUp(email, Passsword, new FireService.fireCallback() {
+                                    @Override
+                                    public void onSuccess(FirebaseUser user) {
+                                        SharedPreferences storage = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = storage.edit();
+                                        editor.putString("Email", email);
+                                        editor.putString("Password", Passsword);
+                                        editor.apply();
+                                        Toast.makeText(getActivity(), "Saved successfully!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getActivity(), MainActivity2.class);
+                                        intent.putExtra(MainActivity.username,Username);
+                                        intent.putExtra(MainActivity.type,"Register");
+                                        startActivity(intent);
+
+                                    }
+
+                                    @Override
+                                    public void onFailure(String message) {
+                                        Toast.makeText(getActivity(),"Sign Up Failed: " + message, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }else{
                                 Toast.makeText(getActivity(), "invalid password!", Toast.LENGTH_SHORT).show();
                             }
