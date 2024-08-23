@@ -69,30 +69,34 @@ public class LoginFragment extends Fragment {
                 email = mailtext.getText().toString();
                 Passsword = passtext.getText().toString();
                 Username = extractTextBeforeNumber(email);
-                if(!email.equals("N/A") && !Passsword.equals("N/A")) {
-                    fireService.login(email, Passsword, new FireService.fireCallback() {
-                        @Override
-                        public void onSuccess(FirebaseUser user) {
-                            SharedPreferences storage = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = storage.edit();
-                            editor.putString("Email", email);
-                            editor.putString("Password", Passsword);
-                            editor.apply();
-                            Toast.makeText(getActivity(), "Successful login!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), MainActivity2.class);
-                            intent.putExtra(MainActivity.username, Username);
-                            intent.putExtra(MainActivity.type, "Login");
-                            startActivity(intent);
-                        }
 
-                        @Override
-                        public void onFailure(String message) {
+                    if (!email.equals("N/A") && !Passsword.equals("N/A")) {
+                        fireService.login(email, Passsword, new FireService.fireCallback() {
+                            @Override
+                            public void onSuccess(FirebaseUser user) {
+                                SharedPreferences storage = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = storage.edit();
+                                editor.putString("Email", email);
+                                editor.putString("Password", Passsword);
+                                editor.apply();
+                                Toast.makeText(getActivity(), "Successful login!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(getActivity(), MainActivity2.class);
+                                intent.putExtra(MainActivity.username, Username);
+                                intent.putExtra(MainActivity.type, "Login");
+                                startActivity(intent);
 
-                        }
-                    });
-                } else {
-                    Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
-                }
+
+                            }
+
+                            @Override
+                            public void onFailure(String message) {
+                                Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
+                    }
+
             }
         });
 

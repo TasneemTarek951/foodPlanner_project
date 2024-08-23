@@ -34,7 +34,7 @@ public class MainActivity2 extends AppCompatActivity {
     NavigationView navigationView;
     String username;
     public static String type;
-
+    public static boolean isConnected;
     private FireService fireService;
 
 
@@ -44,6 +44,8 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         fireService = new FireService(this);
+
+        isConnected = NetworkUtils.isConnected(this);
 
         drawerLayout = findViewById(R.id.main);
         navigationView = findViewById(R.id.navigation);
@@ -127,7 +129,6 @@ public class MainActivity2 extends AppCompatActivity {
 
     private void updateMenuItemsBasedOnConnection() {
         Menu menu = navigationView.getMenu();
-        boolean isConnected = NetworkUtils.isConnected(this);
 
         // Assuming the IDs of the two specific icons are nav_icon1 and nav_icon2
         MenuItem item1 = menu.findItem(R.id.homeFragment);
