@@ -90,7 +90,7 @@ public class LoginFragment extends Fragment {
 
                             @Override
                             public void onFailure(String message) {
-                                Toast.makeText(getActivity(), "Invalid user!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(),"Sign in Failed: " + message, Toast.LENGTH_SHORT).show();
                             }
                         });
                     } else {
