@@ -71,14 +71,6 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
         Glide.with(context).load(meal.getStrMealThumb()).apply(new RequestOptions().override(150,150).placeholder(R.drawable.ic_launcher_background).error(R.drawable.ic_launcher_background)).into(holder.strMealThumb);
 
-        /*holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
-            @Override
-            public void onReady(YouTubePlayer youTubePlayer) {
-                String videoId = extractYouTubeVideoId(meal.getStrYoutube());
-                youTubePlayer.cueVideo(videoId, 0);
-            }
-        });
-        lifecycle.addObserver(holder.strYoutube);*/
 
         holder.strYoutube.addYouTubePlayerListener(new AbstractYouTubePlayerListener() {
             @Override
