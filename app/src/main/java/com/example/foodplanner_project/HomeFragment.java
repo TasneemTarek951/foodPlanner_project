@@ -119,6 +119,7 @@ public class HomeFragment extends Fragment implements onMealClickListener, HomeV
     @Override
     public void clickListener(MealPlan mealPlan) {
             Toast.makeText(getActivity(), "Adding item to your plan!", Toast.LENGTH_SHORT).show();
+
             homePresenter.addToPlan(mealPlan);
 
             if (user != null) {
@@ -131,6 +132,5 @@ public class HomeFragment extends Fragment implements onMealClickListener, HomeV
                                 Toast.makeText(getContext(), "Error saving to Firestore: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
 
             }
-
     }
 }

@@ -120,7 +120,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.addtofav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MainActivity2.type.equals("Guest")){
+                if(MainActivity2.type != null && MainActivity2.type.equals("Guest")){
                     Toast.makeText(context, "Login First", Toast.LENGTH_SHORT).show();
                 }else{
                     listener.OnmealclickListener(meal);
@@ -132,7 +132,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
         holder.addtoplan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(MainActivity2.type.equals("Guest")){
+                if(MainActivity2.type != null && MainActivity2.type.equals("Guest") ){
                     Toast.makeText(context, "Login First", Toast.LENGTH_SHORT).show();
                 }else{
                     showMealSelectionDialog();
@@ -267,7 +267,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
                     }
                 }, year, month, day);
-
+        datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
         // Show the dialog
         datePickerDialog.show();
     }

@@ -8,113 +8,122 @@
     android:background="@drawable/food"
     tools:context=".RegisterFragment">
 
+    <!-- Email Label -->
     <TextView
         android:id="@+id/textView6"
-        android:layout_width="66dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="68dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="@string/email"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.436"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/mail_text"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread" />
 
+    <!-- Email Input -->
     <EditText
         android:id="@+id/mail_text"
-        android:layout_width="242dp"
-        android:layout_height="51dp"
-        android:layout_marginTop="68dp"
-        android:layout_marginEnd="72dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@+id/textView6"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread" />
 
+    <!-- Password Label -->
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="109dp"
-        android:layout_height="36dp"
-        android:layout_marginStart="244dp"
-        android:layout_marginTop="136dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:text="@string/password"
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/pass_text"
+        app:layout_constraintTop_toBottomOf="@+id/mail_text"
+        app:layout_constraintHorizontal_chainStyle="spread" />
 
+    <!-- Password Input -->
+    <EditText
+        android:id="@+id/pass_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/mail_text"
+        app:layout_constraintHorizontal_chainStyle="spread" />
+
+    <!-- Confirm Password Label -->
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="131dp"
-        android:layout_height="37dp"
-        android:layout_marginStart="212dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:text="@string/cpassword"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.518" />
+        app:layout_constraintEnd_toStartOf="@+id/confirm_text"
+        app:layout_constraintTop_toBottomOf="@+id/pass_text"
+        app:layout_constraintHorizontal_chainStyle="spread" />
 
+    <!-- Confirm Password Input -->
+    <EditText
+        android:id="@+id/confirm_text"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintTop_toBottomOf="@+id/pass_text"
+        app:layout_constraintHorizontal_chainStyle="spread" />
+
+    <!-- Register Button -->
+    <Button
+        android:id="@+id/regist_btn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:backgroundTint="#BD4239"
+        android:text="@string/register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/confirm_text"
+        app:layout_constraintHorizontal_bias="0.5" />
+
+    <!-- Login Text -->
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="16dp"
         android:text="@string/tologin"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/login_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/regist_btn"
+        app:layout_constraintHorizontal_bias="0.5" />
 
+    <!-- Login Button -->
     <Button
         android:id="@+id/login_btn"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
         android:backgroundTint="#BD4239"
         android:text="@string/login"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.278"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.5" />
 
-    <Button
-        android:id="@+id/regist_btn"
-        android:layout_width="253dp"
-        android:layout_height="46dp"
-        android:layout_marginBottom="112dp"
-        android:backgroundTint="#BD4239"
-        android:text="@string/register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.585"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/pass_text"
-        android:layout_width="236dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.523"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
-        app:layout_constraintTop_toBottomOf="@+id/mail_text" />
-
-    <EditText
-        android:id="@+id/confirm_text"
-        android:layout_width="239dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="76dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pass_text" />
 </androidx.constraintlayout.widget.ConstraintLayout>

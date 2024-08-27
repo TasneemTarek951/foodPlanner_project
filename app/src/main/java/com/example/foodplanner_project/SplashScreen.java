@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -24,15 +26,27 @@ public class SplashScreen extends AppCompatActivity {
         appname = findViewById(R.id.app_name);
         lottie = findViewById(R.id.Lottie);
 
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-        // Delay transition to MainActivity by 20 seconds (20000 milliseconds)
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent i = new Intent(SplashScreen.this, MainActivity.class);
-                startActivity(i);
-                finish(); // Finish SplashScreen so the user can't return to it
+                if (currentUser != null) {
+                    // User is logged in, navigate to the main features activity
+                    Intent intent = new Intent(SplashScreen.this, MainActivity2.class);
+                    startActivity(intent);
+                } else {
+                    // User is not logged in, navigate to the authentication activity
+                    Intent intent = new Intent(SplashScreen.this, MainActivity.class);
+                    startActivity(intent);
+                }
+
+                // Finish the splash screen activity so it's not in the back stack
+                finish();
             }
+
         }, 3000); // 20 seconds delay
     }
 }

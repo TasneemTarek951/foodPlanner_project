@@ -84,6 +84,7 @@ public class LoginFragment extends Fragment {
                                 intent.putExtra(MainActivity.username, Username);
                                 intent.putExtra(MainActivity.type, "Login");
                                 startActivity(intent);
+                                getActivity().finish();
 
 
                             }

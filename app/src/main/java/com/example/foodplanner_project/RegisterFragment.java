@@ -96,6 +96,7 @@ public class RegisterFragment extends Fragment {
                                         intent.putExtra(MainActivity.username,Username);
                                         intent.putExtra(MainActivity.type,"Register");
                                         startActivity(intent);
+                                        getActivity().finish();
 
                                     }
 

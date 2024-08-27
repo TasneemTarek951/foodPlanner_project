@@ -72,24 +72,26 @@ public class FavoriteFragment extends Fragment implements onFavoriteClickListene
         recycl.setLayoutManager(layout);
         recycl.setAdapter(favoriteAdapter);
 
-        if (currentUser != null) {
-            firestore.collection("users").document(currentUser.getUid())
-                    .collection("favoritemeals")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<Meal> mealList = new ArrayList<>();
-                            for (DocumentSnapshot document : task.getResult()) {
-                                Meal meal = document.toObject(Meal.class);
-                                mealList.add(meal);
+        if(MainActivity2.isConnected) {
+            if (currentUser != null) {
+                firestore.collection("users").document(currentUser.getUid())
+                        .collection("favoritemeals")
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                List<Meal> mealList = new ArrayList<>();
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    Meal meal = document.toObject(Meal.class);
+                                    mealList.add(meal);
+                                }
+                                favoriteAdapter.setList(mealList);
+                                favoriteAdapter.notifyDataSetChanged();
+                            } else {
+                                getActivity().runOnUiThread(() ->
+                                        Toast.makeText(getContext(), "Error getting meals: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show());
                             }
-                            favoriteAdapter.setList(mealList);
-                            favoriteAdapter.notifyDataSetChanged();
-                        } else {
-                            getActivity().runOnUiThread(() ->
-                                    Toast.makeText(getContext(), "Error getting meals: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show());
-                        }
-                    });
+                        });
+            }
         }
 
 
@@ -100,8 +102,10 @@ public class FavoriteFragment extends Fragment implements onFavoriteClickListene
 
     @Override
     public void ShowData(List<Meal> meals) {
-        favoriteAdapter.setList(meals);
-        favoriteAdapter.notifyDataSetChanged();
+        if(!MainActivity2.isConnected) {
+            favoriteAdapter.setList(meals);
+            favoriteAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

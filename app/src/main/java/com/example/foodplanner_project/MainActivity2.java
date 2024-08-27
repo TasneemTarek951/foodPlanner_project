@@ -92,7 +92,7 @@ public class MainActivity2 extends AppCompatActivity {
             }
         });
 
-        if(type.equals("Guest")){
+        if (type != null && type.equals("Guest")) {
             item1.setEnabled(false);
             item2.setEnabled(false);
             item3.setEnabled(false);
@@ -133,13 +133,16 @@ public class MainActivity2 extends AppCompatActivity {
         // Assuming the IDs of the two specific icons are nav_icon1 and nav_icon2
         MenuItem item1 = menu.findItem(R.id.homeFragment);
         MenuItem item2 = menu.findItem(R.id.searchFragment);
+        MenuItem item3 = menu.findItem(R.id.log_out_item);
 
         if (isConnected) {
             item1.setEnabled(true);
             item2.setEnabled(true);
+            item3.setEnabled(true);
         } else {
             item1.setEnabled(false);
             item2.setEnabled(false);
+            item3.setEnabled(false);
             Toast.makeText(this, "No internet connection. Some features are disabled.", Toast.LENGTH_SHORT).show();
         }
     }

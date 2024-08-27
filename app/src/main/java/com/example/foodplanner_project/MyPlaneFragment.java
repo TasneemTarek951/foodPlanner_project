@@ -68,32 +68,37 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
         recycl.setLayoutManager(layout);
         recycl.setAdapter(adapter);
 
-        if (currentUser != null) {
-            firestore.collection("users").document(currentUser.getUid())
-                    .collection("mealPlans")
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            List<MealPlan> mealPlanList = new ArrayList<>();
-                            for (DocumentSnapshot document : task.getResult()) {
-                                MealPlan mealPlan = document.toObject(MealPlan.class);
-                                mealPlanList.add(mealPlan);
+
+        if(MainActivity2.isConnected) {
+            if (currentUser != null) {
+                firestore.collection("users").document(currentUser.getUid())
+                        .collection("mealPlans")
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                List<MealPlan> mealPlanList = new ArrayList<>();
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    MealPlan mealPlan = document.toObject(MealPlan.class);
+                                    mealPlanList.add(mealPlan);
+                                }
+                                adapter.setList(mealPlanList);
+                                adapter.notifyDataSetChanged();
+                            } else {
+                                getActivity().runOnUiThread(() ->
+                                        Toast.makeText(getContext(), "Error getting meal plans: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show());
                             }
-                            adapter.setList(mealPlanList);
-                            adapter.notifyDataSetChanged();
-                        } else {
-                            getActivity().runOnUiThread(() ->
-                                    Toast.makeText(getContext(), "Error getting meal plans: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show());
-                        }
-                    });
+                        });
+            }
         }
 
     }
 
     @Override
     public void ShowData(List<MealPlan> mealPlanList) {
-        adapter.setList(mealPlanList);
-        adapter.notifyDataSetChanged();
+        if(!MainActivity2.isConnected) {
+            adapter.setList(mealPlanList);
+            adapter.notifyDataSetChanged();
+        }
 
     }
 

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.Lifecycle;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.foodplanner_project.MainActivity2;
 import com.example.foodplanner_project.R;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer;
 import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.listeners.AbstractYouTubePlayerListener;
@@ -91,7 +93,11 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         holder.removefromfav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onFavoriteClickListener.OnfavClickListener(meal);
+                if(MainActivity2.isConnected){
+                    onFavoriteClickListener.OnfavClickListener(meal);
+                }else{
+                    Toast.makeText(context, "connect to internet!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
