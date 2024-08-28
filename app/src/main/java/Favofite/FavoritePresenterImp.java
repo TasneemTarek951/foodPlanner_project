@@ -38,7 +38,7 @@ public class FavoritePresenterImp implements FavoritePresenter{
     }
 
     public List<Meal> Showfav(){
-        return repo.Showfavmeals();
+        return repo.meals;
     }
 
     @Override

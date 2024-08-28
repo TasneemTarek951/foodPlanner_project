@@ -34,7 +34,7 @@ public class PlanPresenterImp implements PlanPresenter{
     }
 
     public List<MealPlan> Showplanmeals(){
-        return repo.Showplanmeals();
+        return repo.mealPlanList;
     }
     @Override
     public void RemoveFromPlan(MealPlan mealPlan) {

@@ -44,8 +44,8 @@ public class Repository {
     private LiveData<List<Meal>> storedmeals;
     private LiveData<List<MealPlan>> mealsplan;
 
-    List<Meal> meals;
-    List<MealPlan> mealPlanList;
+    public static List<Meal> meals;
+    public static List<MealPlan> mealPlanList;
 
     private FirebaseAuth firebaseAuth;
     private GoogleSignInClient googleSignInClient;
@@ -346,13 +346,7 @@ public class Repository {
         }
     }
 
-    public List<Meal> Showfavmeals(){
-        return meals;
-    }
 
-    public List<MealPlan> Showplanmeals(){
-        return mealPlanList;
-    }
 
     public void deletfromplan(MealPlan mealPlan){
         if (user != null) {

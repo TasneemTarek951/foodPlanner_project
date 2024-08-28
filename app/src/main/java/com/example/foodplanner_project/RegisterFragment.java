@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import db.Repository;
+
 
 public class RegisterFragment extends Fragment {
 
@@ -34,7 +36,7 @@ public class RegisterFragment extends Fragment {
     String Passsword;
     String Confirm;
     private static final String PREFS_NAME = "LoginData";
-    private FireService fireService;
+    Repository repo;
 
     String Username;
 
@@ -63,7 +65,7 @@ public class RegisterFragment extends Fragment {
         confirmtext = view.findViewById(R.id.confirm_text);
         regist = view.findViewById(R.id.regist_btn);
 
-        fireService = new FireService(getActivity());
+        repo = new Repository(getActivity());
 
 
 
@@ -81,7 +83,7 @@ public class RegisterFragment extends Fragment {
                     if(isValidEmail(email)){
                         if(Passsword.equals(Confirm)){
                             if(validation(Passsword)){
-                                fireService.signUp(email, Passsword, new FireService.fireCallback() {
+                                repo.signUp(email, Passsword, new Repository.fireCallback() {
                                     @Override
                                     public void onSuccess(FirebaseUser user) {
                                         SharedPreferences storage = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);

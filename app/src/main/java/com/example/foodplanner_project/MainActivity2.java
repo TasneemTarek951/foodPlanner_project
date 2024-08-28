@@ -26,6 +26,8 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
+import db.Repository;
+
 public class MainActivity2 extends AppCompatActivity {
     NavController navController;
     DrawerLayout drawerLayout;
@@ -33,7 +35,7 @@ public class MainActivity2 extends AppCompatActivity {
     String username;
     public static String type;
     public static boolean isConnected;
-    private FireService fireService;
+    Repository repo;
 
 
     @Override
@@ -41,7 +43,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        fireService = new FireService(this);
+        repo = new Repository(this);
 
         isConnected = NetworkUtils.isConnected(this);
 
@@ -74,7 +76,7 @@ public class MainActivity2 extends AppCompatActivity {
         item3.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                fireService.signOut(MainActivity2.this, new FireService.fireCallback() {
+                repo.signOut(MainActivity2.this, new Repository.fireCallback() {
                     @Override
                     public void onSuccess(FirebaseUser user) {
                         finish();

@@ -27,32 +27,26 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Authentication.AuthenticationContract;
+import Authentication.AuthenticationPresenter;
+import db.Repository;
 
-public class AuthenticationFragment extends Fragment {
 
+public class AuthenticationFragment extends Fragment implements AuthenticationContract.View {
 
-    Button regist;
-    Button log;
-    Button guest;
-    Button log_G;
+    Button regist, log, guest, log_G;
     private ActivityResultLauncher<Intent> googleSignInLauncher;
-
     private static final String PREFS_NAME = "LoginData";
-
-    private static final int RC_SIGN_IN = 1;
-
-    private FireService fireService;
+    private AuthenticationContract.Presenter presenter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        presenter = new AuthenticationPresenter(this, getActivity());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_authentication, container, false);
     }
 
@@ -65,94 +59,50 @@ public class AuthenticationFragment extends Fragment {
         guest = view.findViewById(R.id.Guest_btn);
         log_G = view.findViewById(R.id.Log_G_btn);
 
-        fireService = new FireService(getActivity());
-
-
-
-
         googleSignInLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                        Intent data = result.getData();
-                        fireService.handleGoogleSignInResult(data, new FireService.fireCallback() {
-                            @Override
-                            public void onSuccess(FirebaseUser user) {
-                                Toast.makeText(getActivity(), "Google Login Successful", Toast.LENGTH_SHORT).show();
-
-                                SharedPreferences storage = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = storage.edit();
-                                editor.putString("Email", FireService.email);
-                                editor.apply();
-
-                                Intent intent = new Intent(getActivity(), MainActivity2.class);
-                                intent.putExtra(MainActivity.username, extractTextBeforeNumber(FireService.email));
-                                intent.putExtra(MainActivity.type, "google signin");
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void onFailure(String message) {
-                                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                        presenter.handleGoogleSignInResult(result.getData());
                     }
                 }
         );
 
-
-
-
-
-
-        regist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_authenticationFragment_to_registerFragment);
-            }
-        });
-
-        log.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_authenticationFragment_to_loginFragment);
-            }
-        });
-
-        guest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), MainActivity2.class);
-                intent.putExtra(MainActivity.username, "Guest");
-                intent.putExtra(MainActivity.type, "Guest");
-                startActivity(intent);
-            }
-        });
-
-
-        log_G.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fireService.signInWithGoogle(googleSignInLauncher);
-            }
-        });
-
+        regist.setOnClickListener(v -> presenter.handleRegisterButtonClick());
+        log.setOnClickListener(v -> presenter.handleLoginButtonClick());
+        guest.setOnClickListener(v -> presenter.handleGuestButtonClick());
+        log_G.setOnClickListener(v -> presenter.handleGoogleLoginButtonClick(googleSignInLauncher));
     }
 
+    @Override
+    public void showGoogleLoginSuccess(String username) {
+        Toast.makeText(getActivity(), "Google Login Successful", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), MainActivity2.class);
+        intent.putExtra(MainActivity.username, username);
+        intent.putExtra(MainActivity.type, "google signin");
+        startActivity(intent);
+    }
 
-    public static String extractTextBeforeNumber(String email) {
-        // Regex pattern to match text before numbers
-        String pattern = "^[a-zA-Z]+";
+    @Override
+    public void showLoginFailure(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+    }
 
-        // Create a Pattern object
-        Pattern r = Pattern.compile(pattern);
+    @Override
+    public void navigateToRegister() {
+        Navigation.findNavController(getView()).navigate(R.id.action_authenticationFragment_to_registerFragment);
+    }
 
-        // Now create matcher object
-        Matcher m = r.matcher(email);
-        if (m.find()) {
-            return m.group(0);
-        } else {
-            return "";
-        }
+    @Override
+    public void navigateToLogin() {
+        Navigation.findNavController(getView()).navigate(R.id.action_authenticationFragment_to_loginFragment);
+    }
+
+    @Override
+    public void navigateAsGuest() {
+        Intent intent = new Intent(getActivity(), MainActivity2.class);
+        intent.putExtra(MainActivity.username, "Guest");
+        intent.putExtra(MainActivity.type, "Guest");
+        startActivity(intent);
     }
 }
