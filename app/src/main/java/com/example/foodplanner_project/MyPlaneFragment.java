@@ -36,9 +36,6 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
     PlanPresenterImp presenterImp;
     PlanAdapter adapter;
 
-    private FirebaseFirestore firestore;
-    private FirebaseAuth firebaseAuth;
-    FirebaseUser currentUser;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,9 +56,6 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
         layout = new LinearLayoutManager(getActivity());
         layout.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        firestore = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
-        currentUser = firebaseAuth.getCurrentUser();
 
         presenterImp = new PlanPresenterImp(getActivity(),this,this);
         adapter = new PlanAdapter(getActivity(),new ArrayList<MealPlan>(),this,getViewLifecycleOwner().getLifecycle());
