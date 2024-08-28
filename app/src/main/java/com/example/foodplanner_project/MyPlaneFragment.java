@@ -69,34 +69,15 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
         recycl.setAdapter(adapter);
 
 
-        if(MainActivity2.isConnected) {
-            if (currentUser != null) {
-                firestore.collection("users").document(currentUser.getUid())
-                        .collection("mealPlans")
-                        .get()
-                        .addOnCompleteListener(task -> {
-                            if (task.isSuccessful()) {
-                                List<MealPlan> mealPlanList = new ArrayList<>();
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    MealPlan mealPlan = document.toObject(MealPlan.class);
-                                    mealPlanList.add(mealPlan);
-                                }
-                                adapter.setList(mealPlanList);
-                                adapter.notifyDataSetChanged();
-                            } else {
-                                getActivity().runOnUiThread(() ->
-                                        Toast.makeText(getContext(), "Error getting meal plans: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show());
-                            }
-                        });
-            }
-        }
-
     }
 
     @Override
     public void ShowData(List<MealPlan> mealPlanList) {
         if(!MainActivity2.isConnected) {
             adapter.setList(mealPlanList);
+            adapter.notifyDataSetChanged();
+        }else{
+            adapter.setList(presenterImp.Showplanmeals());
             adapter.notifyDataSetChanged();
         }
 
@@ -106,16 +87,5 @@ public class MyPlaneFragment extends Fragment implements onPlanClickListener, Pl
     public void onplanclicklistener(MealPlan mealPlan) {
         Toast.makeText(getActivity(), "deleted", Toast.LENGTH_SHORT).show();
         presenterImp.RemoveFromPlan(mealPlan);
-        if (currentUser != null) {
-            DocumentReference mealPlanRef = firestore.collection("users").document(currentUser.getUid())
-                    .collection("mealPlans").document(mealPlan.getStrMeal());
-
-            mealPlanRef.delete()
-                    .addOnSuccessListener(aVoid -> getActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), "Meal plan deleted successfully from Firestore!", Toast.LENGTH_SHORT).show()))
-                    .addOnFailureListener(e -> getActivity().runOnUiThread(() ->
-                            Toast.makeText(getContext(), "Error deleting meal plan: " + e.getMessage(), Toast.LENGTH_SHORT).show()));
-        }
-
     }
 }

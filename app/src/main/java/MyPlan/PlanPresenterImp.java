@@ -32,8 +32,13 @@ public class PlanPresenterImp implements PlanPresenter{
         LiveData<List<MealPlan>> observable = repo.getMealsplan();
         observable.observe(owner,observer);
     }
+
+    public List<MealPlan> Showplanmeals(){
+        return repo.Showplanmeals();
+    }
     @Override
     public void RemoveFromPlan(MealPlan mealPlan) {
         repo.deletefromplan(mealPlan);
+        repo.deletfromplan(mealPlan);
     }
 }

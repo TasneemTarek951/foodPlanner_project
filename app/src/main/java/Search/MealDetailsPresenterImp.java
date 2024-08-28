@@ -28,11 +28,13 @@ public class MealDetailsPresenterImp implements NetworkCallback, HomePresenter {
     @Override
     public void addToFavorite(Meal meal) {
         repo.insert(meal);
+        repo.addtofav(meal);
     }
 
     @Override
     public void addToPlan(MealPlan mealPlan) {
         repo.inserttoplan(mealPlan);
+        repo.addtoplan(mealPlan);
     }
 
     @Override

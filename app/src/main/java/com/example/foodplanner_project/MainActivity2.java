@@ -26,8 +26,6 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
-import db.FireService;
-
 public class MainActivity2 extends AppCompatActivity {
     NavController navController;
     DrawerLayout drawerLayout;

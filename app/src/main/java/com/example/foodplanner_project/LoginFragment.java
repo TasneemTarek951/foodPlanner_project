@@ -22,8 +22,6 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import db.FireService;
-
 
 public class LoginFragment extends Fragment {
 

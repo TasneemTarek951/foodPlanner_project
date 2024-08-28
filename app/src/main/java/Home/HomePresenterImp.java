@@ -1,6 +1,12 @@
 package Home;
 
 import android.content.Context;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -25,11 +31,13 @@ public class HomePresenterImp implements NetworkCallback,HomePresenter {
     @Override
     public void addToFavorite(Meal meal) {
           repo.insert(meal);
+          repo.addtofav(meal);
     }
 
     @Override
     public void addToPlan(MealPlan mealPlan) {
         repo.inserttoplan(mealPlan);
+        repo.addtoplan(mealPlan);
     }
 
     @Override

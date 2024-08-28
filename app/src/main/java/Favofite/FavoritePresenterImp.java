@@ -37,8 +37,13 @@ public class FavoritePresenterImp implements FavoritePresenter{
 
     }
 
+    public List<Meal> Showfav(){
+        return repo.Showfavmeals();
+    }
+
     @Override
     public void removefromFavorite(Meal meal) {
           repo.delete(meal);
+          repo.deletfromfav(meal);
     }
 }
