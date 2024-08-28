@@ -26,16 +26,19 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
+import Authentication.LogoutPresenter;
+import Authentication.LogoutView;
+import Authentication.LogoutpresenterImp;
 import db.Repository;
 
-public class MainActivity2 extends AppCompatActivity {
+public class MainActivity2 extends AppCompatActivity implements LogoutView {
     NavController navController;
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     String username;
     public static String type;
     public static boolean isConnected;
-    Repository repo;
+    private LogoutPresenter presenter;
 
 
     @Override
@@ -43,7 +46,7 @@ public class MainActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        repo = new Repository(this);
+        presenter = new LogoutpresenterImp(this,this,this);
 
         isConnected = NetworkUtils.isConnected(this);
 
@@ -76,18 +79,7 @@ public class MainActivity2 extends AppCompatActivity {
         item3.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                repo.signOut(MainActivity2.this, new Repository.fireCallback() {
-                    @Override
-                    public void onSuccess(FirebaseUser user) {
-                        finish();
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        Toast.makeText(MainActivity2.this, "failed signOut!", Toast.LENGTH_SHORT).show();
-
-                    }
-                });
+                presenter.logout();
                 return true;
             }
         });
@@ -117,6 +109,16 @@ public class MainActivity2 extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void showToast(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void closeActivity() {
+        finish();
     }
 
     public static class NetworkUtils {

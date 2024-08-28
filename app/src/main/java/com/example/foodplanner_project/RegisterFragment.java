@@ -22,37 +22,25 @@ import com.google.firebase.auth.FirebaseUser;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Authentication.RegisterContract;
+import Authentication.RegisterPresenter;
 import db.Repository;
 
 
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements RegisterContract.View {
 
-    Button log_btn;
-    Button regist;
-    EditText mailtext;
-    EditText passtext;
-    EditText confirmtext;
-    String email;
-    String Passsword;
-    String Confirm;
-    private static final String PREFS_NAME = "LoginData";
-    Repository repo;
+    Button log_btn, regist;
+    EditText mailtext, passtext, confirmtext;
+    private RegisterContract.Presenter presenter;
 
-    String Username;
-
-
-
-    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        presenter = new RegisterPresenter(this, getActivity());
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_register, container, false);
     }
 
@@ -65,89 +53,54 @@ public class RegisterFragment extends Fragment {
         confirmtext = view.findViewById(R.id.confirm_text);
         regist = view.findViewById(R.id.regist_btn);
 
-        repo = new Repository(getActivity());
-
-
-
-        regist.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                email = mailtext.getText().toString();
-                Passsword = passtext.getText().toString();
-                Confirm = confirmtext.getText().toString();
-
-                Username = extractTextBeforeNumber(email);
-
-
-                if(!(email.equals("") && Passsword.equals("") && Confirm.equals(""))){
-                    if(isValidEmail(email)){
-                        if(Passsword.equals(Confirm)){
-                            if(validation(Passsword)){
-                                repo.signUp(email, Passsword, new Repository.fireCallback() {
-                                    @Override
-                                    public void onSuccess(FirebaseUser user) {
-                                        SharedPreferences storage = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = storage.edit();
-                                        editor.putString("Email", email);
-                                        editor.putString("Password", Passsword);
-                                        editor.apply();
-                                        Toast.makeText(getActivity(), "Saved successfully!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getActivity(), MainActivity2.class);
-                                        intent.putExtra(MainActivity.username,Username);
-                                        intent.putExtra(MainActivity.type,"Register");
-                                        startActivity(intent);
-                                        getActivity().finish();
-
-                                    }
-
-                                    @Override
-                                    public void onFailure(String message) {
-                                        Toast.makeText(getActivity(),"Sign Up Failed: " + message, Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            }else{
-                                Toast.makeText(getActivity(), "invalid password!", Toast.LENGTH_SHORT).show();
-                            }
-                        }else{
-                            Toast.makeText(getActivity(), "password and confirm password must be the same!", Toast.LENGTH_SHORT).show();
-                        }
-                    }else{
-                        Toast.makeText(getActivity(), "invalid email!", Toast.LENGTH_SHORT).show();
-                    }
-                }else{
-                    Toast.makeText(getActivity(), "please enter your mail & password!", Toast.LENGTH_SHORT).show();
-                }
-            }
+        regist.setOnClickListener(v -> {
+            String email = mailtext.getText().toString();
+            String password = passtext.getText().toString();
+            String confirmPassword = confirmtext.getText().toString();
+            presenter.handleRegisterButtonClick(email, password, confirmPassword);
         });
 
-
-        log_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_registerFragment_to_loginFragment);
-            }
-        });
+        log_btn.setOnClickListener(v -> presenter.handleLoginButtonClick());
     }
 
-    public static boolean isValidEmail(String email) {
-        // Define the regular expression for email validation
-        String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$";
-
-        // Compile the regex
-        Pattern pattern = Pattern.compile(emailRegex);
-
-        // Match the email with the regex
-        Matcher matcher = pattern.matcher(email);
-
-        // Return true if the email matches the regex, false otherwise
-        return matcher.matches();
+    @Override
+    public void showRegistrationSuccess(String username) {
+        Toast.makeText(getActivity(), "Saved successfully!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), MainActivity2.class);
+        intent.putExtra(MainActivity.username, username);
+        intent.putExtra(MainActivity.type, "Register");
+        startActivity(intent);
+        getActivity().finish();
     }
 
-    private boolean validation(String pass) {
-        // Check if the name contains both letters and numbers
-        String complexPasswordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$";
-        return pass.matches(complexPasswordPattern);
+    @Override
+    public void showRegistrationFailure(String message) {
+        Toast.makeText(getActivity(), "Sign Up Failed: " + message, Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void navigateToLogin() {
+        Navigation.findNavController(getView()).navigate(R.id.action_registerFragment_to_loginFragment);
+    }
+
+    @Override
+    public void showInvalidEmailError() {
+        Toast.makeText(getActivity(), "Invalid email!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showInvalidPasswordError() {
+        Toast.makeText(getActivity(), "Invalid password!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showPasswordMismatchError() {
+        Toast.makeText(getActivity(), "Password and confirm password must be the same!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showEmptyFieldsError() {
+        Toast.makeText(getActivity(), "Please enter your mail & password!", Toast.LENGTH_SHORT).show();
     }
 
     public static String extractTextBeforeNumber(String email) {
