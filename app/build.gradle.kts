@@ -77,6 +77,6 @@ dependencies {
 
     implementation ("com.google.firebase:firebase-auth:23.0.0")
 
-
+    implementation ("com.google.firebase:firebase-auth:22.3.1")
     implementation ("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
 }

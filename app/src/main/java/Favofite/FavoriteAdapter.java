@@ -43,7 +43,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
     }
 
     public void setList(List<Meal> meals){
-        mealList = meals;
+        mealList = (meals != null) ? meals : new ArrayList<>();
         notifyDataSetChanged();
     }
 
@@ -105,7 +105,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
 
     @Override
     public int getItemCount() {
-        return mealList.size();
+        return (mealList != null) ? mealList.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

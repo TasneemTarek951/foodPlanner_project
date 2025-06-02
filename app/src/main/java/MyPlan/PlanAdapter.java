@@ -118,7 +118,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return mealPlanList.size();
+        return (mealPlanList != null) ? mealPlanList.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

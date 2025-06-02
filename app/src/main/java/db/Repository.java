@@ -144,8 +144,7 @@ public class Repository {
                     if (task.isSuccessful()) {
                         FirebaseUser user = firebaseAuth.getCurrentUser();
                         if (user != null) {
-                            user.updateProfile(new UserProfileChangeRequest.Builder()
-                                            .build())
+                            user.updateProfile(new UserProfileChangeRequest.Builder().build())
                                     .addOnCompleteListener(profileTask -> {
                                         if (profileTask.isSuccessful()) {
                                             Map<String, Object> userData = new HashMap<>();
@@ -164,17 +163,34 @@ public class Repository {
                                                 }
                                             });
                                         } else {
-                                            callback.onFailure("Profile update failed");
+                                            callback.onFailure("Profile update failed.");
                                         }
                                     });
                         } else {
-                            callback.onFailure("User creation failed");
+                            callback.onFailure("User creation failed.");
                         }
                     } else {
-                        callback.onFailure(task.getException().getMessage());
+                        Exception exception = task.getException();
+                        if (exception != null) {
+                            String message = exception.getMessage();
+                            if (message != null) {
+                                if (message.contains("email address is already in use")) {
+                                    callback.onFailure("This email is already registered. Please login.");
+                                } else if (message.contains("badly formatted")) {
+                                    callback.onFailure("Invalid email format.");
+                                } else {
+                                    callback.onFailure(message);
+                                }
+                            } else {
+                                callback.onFailure("Registration failed. Please try again.");
+                            }
+                        } else {
+                            callback.onFailure("Unknown error occurred.");
+                        }
                     }
                 });
     }
+
 
     public void signInWithGoogle(ActivityResultLauncher<Intent> launcher) {
         Intent signInIntent = googleSignInClient.getSignInIntent();
