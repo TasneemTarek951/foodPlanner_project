@@ -23,6 +23,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,83 +33,45 @@ import Authentication.LogoutpresenterImp;
 import db.Repository;
 
 public class MainActivity2 extends AppCompatActivity implements LogoutView {
+
     NavController navController;
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
+    BottomNavigationView bottomNavigationView;
+    private LogoutPresenter presenter;
     String username;
     public static String type;
     public static boolean isConnected;
-    private LogoutPresenter presenter;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
-        presenter = new LogoutpresenterImp(this,this,this);
+        presenter = new LogoutpresenterImp(this, this, this);
 
         isConnected = NetworkUtils.isConnected(this);
 
-        drawerLayout = findViewById(R.id.main);
-        navigationView = findViewById(R.id.navigation);
+        // Setup Navigation
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavigationUI.setupWithNavController(bottomNavigationView, navController);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setHomeAsUpIndicator(R.drawable.menu_24dp_5f6368_fill0_wght400_grad0_opsz24);
-        actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        navController = Navigation.findNavController(this,R.id.nav_host_fragment);
-        NavigationUI.setupWithNavController(navigationView,navController);
-
+        // Retrieve user data
         Intent intent = getIntent();
         username = intent.getStringExtra(MainActivity.username);
         type = intent.getStringExtra(MainActivity.type);
 
-        View headerView = navigationView.getHeaderView(0);
-        TextView textView = headerView.findViewById(R.id.name_tv);
-        textView.setText(username);
-
-        Menu menu = navigationView.getMenu();
-        MenuItem item1 = menu.findItem(R.id.favoriteFragment);
-        MenuItem item2 = menu.findItem(R.id.myPlaneFragment);
-        MenuItem item3 = menu.findItem(R.id.log_out_item);
-
-        updateMenuItemsBasedOnConnection();
-
-        item3.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(@NonNull MenuItem menuItem) {
-                presenter.logout();
-                return true;
-            }
-        });
+        if (!isConnected) {
+            Toast.makeText(this, "No internet connection. Some features are disabled.", Toast.LENGTH_SHORT).show();
+        }
 
         if (type != null && type.equals("Guest")) {
-            item1.setEnabled(false);
-            item2.setEnabled(false);
-            item3.setEnabled(false);
+            disableGuestFeatures();
         }
-
-
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateMenuItemsBasedOnConnection();
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
-            if(drawerLayout.isDrawerOpen(GravityCompat.START)){
-                drawerLayout.closeDrawer(GravityCompat.START);
-            }else {
-                drawerLayout.openDrawer(GravityCompat.START);
-            }
-        }
-        return super.onOptionsItemSelected(item);
+    private void disableGuestFeatures() {
+        bottomNavigationView.getMenu().findItem(R.id.favoriteFragment).setEnabled(false);
+        bottomNavigationView.getMenu().findItem(R.id.myPlaneFragment).setEnabled(false);
     }
 
     @Override
@@ -126,26 +89,6 @@ public class MainActivity2 extends AppCompatActivity implements LogoutView {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
             return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        }
-    }
-
-    private void updateMenuItemsBasedOnConnection() {
-        Menu menu = navigationView.getMenu();
-
-        // Assuming the IDs of the two specific icons are nav_icon1 and nav_icon2
-        MenuItem item1 = menu.findItem(R.id.homeFragment);
-        MenuItem item2 = menu.findItem(R.id.searchFragment);
-        MenuItem item3 = menu.findItem(R.id.log_out_item);
-
-        if (isConnected) {
-            item1.setEnabled(true);
-            item2.setEnabled(true);
-            item3.setEnabled(true);
-        } else {
-            item1.setEnabled(false);
-            item2.setEnabled(false);
-            item3.setEnabled(false);
-            Toast.makeText(this, "No internet connection. Some features are disabled.", Toast.LENGTH_SHORT).show();
         }
     }
 }
