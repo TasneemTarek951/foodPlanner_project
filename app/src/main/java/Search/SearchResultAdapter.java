@@ -16,6 +16,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.foodplanner_project.R;
 import com.example.foodplanner_project.SearchResultFragmentDirections;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import db.HomeAdapter;
@@ -26,10 +27,11 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     public SearchResultAdapter(Context con,List<Image> imageList){
         context = con;
-        images = imageList;
+        images = (imageList != null) ? imageList : new ArrayList<>();
     }
     public void SetList(List<Image> imageList){
-        images = imageList;
+        images = (imageList != null) ? imageList : new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -59,7 +61,7 @@ public class SearchResultAdapter extends RecyclerView.Adapter<SearchResultAdapte
 
     @Override
     public int getItemCount() {
-        return images.size();
+        return (images != null) ? images.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -53,12 +54,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     public HomeAdapter(Context con,List<Meal> mealList,onMealClickListener li,Lifecycle life){
         context = con;
-        meals = mealList;
+        meals = (mealList != null) ? mealList : new ArrayList<>();
         listener = li;
         lifecycle = life;
     }
     public void SetList(List<Meal> mealList){
-        meals = mealList;
+        this.meals = (mealList != null) ? mealList : new ArrayList<>();
+        notifyDataSetChanged();
     }
     @NonNull
     @Override
@@ -148,7 +150,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return meals.size();
+        return (meals != null) ? meals.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
